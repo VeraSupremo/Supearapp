@@ -1,0 +1,1 @@
+ C:\\Users\\Asus\\Documents\\was\ utal\\Dispositivos\ Moviles\\Supearapp\\.dart_tool\\flutter_build\\f0b755c04fcb73efbd3f78c459cf15fb\\dart_build_result.json: 
