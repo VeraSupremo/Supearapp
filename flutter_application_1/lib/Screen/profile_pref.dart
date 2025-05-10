@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
-
 class ProfilePref extends StatefulWidget {
   const ProfilePref({super.key, required this.title});
 
@@ -20,11 +17,6 @@ class ProfilePref extends StatefulWidget {
   @override
   State<ProfilePref> createState() => _ProfilePref();
 }
-
-
-
-
-
 
 class _ProfilePref extends State<ProfilePref> {
   int _counter = 0;
@@ -77,9 +69,7 @@ class _ProfilePref extends State<ProfilePref> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            const Text('You have pushed the button this many times:'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,

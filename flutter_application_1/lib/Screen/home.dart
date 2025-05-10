@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Text('Index 2: School', style: optionStyle),
   ];
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) { //este metodo es el que se llama cuando se selecciona un elemento del menu
     setState(() {
       _selectedIndex = index;
     });
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // through the options in the drawer if there isn't enough vertical
         // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
+          // Importante: eliminar cualquier relleno de la ListView
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
@@ -81,7 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 // Update the state of the app
                 //_onItemTapped(0); //------------------------------------------------------poner navegator push
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage(title: "Menu",)));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyHomePage(title: "Menu"),
+                  ),
+                );
                 // Then close the drawer
                 //Navigator.pop(context);
               },
@@ -92,7 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 // Update the state of the app
                 //_onItemTapped(1);//------------------------------------------------------poner navegator push
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage(title: "Perfil",)));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfilePage(title: "Perfil"),
+                  ),
+                );
                 // Then close the drawer
                 //Navigator.pop(context);
               },
@@ -102,11 +112,15 @@ class _MyHomePageState extends State<MyHomePage> {
               selected: _selectedIndex == 2,
               onTap: () {
                 // Update the state of the app
-               // _onItemTapped(2);//------------------------------------------------------poner navegator push
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const LikePage(title: "LikeP", )));
+                // _onItemTapped(2);//------------------------------------------------------poner navegator push
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LikePage(title: "LikeP"),
+                  ),
+                );
                 // Then close the drawer
                 //Navigator.pop(context);
-               
               },
             ),
           ],
