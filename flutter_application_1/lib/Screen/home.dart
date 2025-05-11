@@ -35,9 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
     fontWeight: FontWeight.bold,
   );
   static const List<Widget> _widgetOptions = <Widget>[
-    Text('Index 0: Home', style: optionStyle),
-    Text('Index 1: Business', style: optionStyle),
-    Text('Index 2: School', style: optionStyle),
+    Text('Index 0: Inicio', style: optionStyle),
+    Text('Index 1: Usuario', style: optionStyle),
+    Text('Index 2: Mercado', style: optionStyle),
   ];
 
   void _onItemTapped(int index) { //este metodo es el que se llama cuando se selecciona un elemento del menu
@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: const Text('Home'),
+              title: const Text('Inicio'),
               selected: _selectedIndex == 0,
               onTap: () {
                 // Update the state of the app
@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const MyHomePage(title: "Menu"),
+                    builder: (context) => const MyHomePage(title: "LikePage"),
                   ),
                 );
                 // Then close the drawer
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text('Business'),
+              title: const Text('Usuario'),
               selected: _selectedIndex == 1,
               onTap: () {
                 // Update the state of the app
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text('School'),
+              title: const Text('Mercado'),
               selected: _selectedIndex == 2,
               onTap: () {
                 // Update the state of the app
@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LikePage(title: "LikeP"),
+                    builder: (context) => const LikePage(title: "SplashScreen"),
                   ),
                 );
                 // Then close the drawer
