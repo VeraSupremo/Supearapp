@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screen/profile.dart';
-import 'like.dart';
+import 'like.dart'; // Importa la página de Like
 //import 'profile.dart';
 
 void main() => runApp(const MyApp());
@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const MyHomePage(title: "LikePage"),
+                    builder: (context) => const LikePage(title: "Produccion de Arboles"),
                   ),
                 );
                 // Then close the drawer
@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LikePage(title: "SplashScreen"),
+                    builder: (context) => const LikePage(title: "Mercado"),
                   ),
                 );
                 // Then close the drawer
