@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LikePage(title: "Produccion de Arboles"),
+                    builder: (context) => const ProduccionesPage(title: "Produccion de Arboles"),
                   ),
                 );
                 // Then close the drawer
@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LikePage(title: "Mercado"),
+                    builder: (context) => const ProduccionesPage(title: "Mercado"),
                   ),
                 );
                 // Then close the drawer
