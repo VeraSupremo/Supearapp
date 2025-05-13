@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/Screen/profile.dart';
 import 'like.dart'; // Importa la página de Like
 //import 'profile.dart';
@@ -8,7 +9,7 @@ void main() => runApp(const MyApp());
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const appTitle = 'Drawer Demo';
+  static const appTitle = 'SupearApp'; // Titulo de la app
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Text('Index 2: Mercado', style: optionStyle),
   ];
 
-  void _onItemTapped(int index) { //este metodo es el que se llama cuando se selecciona un elemento del menu
+  void _onItemTapped(int index) {
+    //este metodo es el que se llama cuando se selecciona un elemento del menu
     setState(() {
       _selectedIndex = index;
     });
@@ -64,27 +66,55 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(child: _widgetOptions[_selectedIndex]),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
+        //añadir a listview al drawer. Esto asegura que el usuario pueda desplazarse
+        //a través de las opciones en el cajón si no hay suficiente espacio vertical
+        // para encajar todo.
+        // El Drawer es un widget que se desliza desde el lado de la pantalla
+        backgroundColor: Color.fromARGB(255, 246, 252, 246),
         child: ListView(
           // Importante: eliminar cualquier relleno de la ListView
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Drawer Header'),
+            Padding(
+              padding: const EdgeInsets.only(left: 0,right: 0,top: 22,bottom: 22,),
+
+              //padding: const EdgeInsets.all(4.2),
+              child: const DrawerHeader(
+                // Encabezado del menú lateral
+                // decoration:PictureLayer.network('https://live.staticflickr.com/65535/53752621454_c14ecc01ec_b'),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 190, 238, 144),
+                  // borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(radius: 50,
+                      backgroundImage: AssetImage('assets/pictures/p1.jpg'),
+                    ),
+                    SizedBox(height: 5), // Espacio entre el avatar y el texto
+                    Text('Nombre de Usuario',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),
+                    ),
+                  ],
+                ),
+              ),
             ),
+
             ListTile(
+              // de aqui en adelante son los elementos del menu lateral
+              leading: const Icon(Icons.home_work_outlined),
               title: const Text('Inicio'),
               selected: _selectedIndex == 0,
               onTap: () {
-                // Update the state of the app
+                // Actualiza el estado de la aplicación
                 //_onItemTapped(0); //------------------------------------------------------poner navegator push
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProduccionesPage(title: "Produccion de Arboles"),
+                    builder:
+                        (context) => const ProduccionesPage(
+                          title: "Produccion de Arboles",
+                        ),
                   ),
                 );
                 // Then close the drawer
@@ -92,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.person_2_outlined),
               title: const Text('Usuario'),
               selected: _selectedIndex == 1,
               onTap: () {
@@ -108,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.store),
               title: const Text('Mercado'),
               selected: _selectedIndex == 2,
               onTap: () {
@@ -116,7 +148,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProduccionesPage(title: "Mercado"),
+                    builder:
+                        (context) => const ProduccionesPage(title: "Mercado"),
                   ),
                 );
                 // Then close the drawer
@@ -129,6 +162,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
-//lo es

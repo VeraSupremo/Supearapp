@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ProfilePage extends StatelessWidget {
   // Esta clase representa la página de perfil
   const ProfilePage({super.key, required this.title});
@@ -13,28 +12,26 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         //barra superior
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary, // Cambia el color de la AppBar
-        backgroundColor: const Color.fromARGB(
-          255,
-          20,
-          100,
-          22,
-        ), // Cambia el color de la AppBar
+        backgroundColor: const Color.fromARGB(255,20,100,22,), // Cambia el color de la AppBar
         title: Text(title),
       ),
       body: Column(
         children: <Widget>[
           Padding(
+            // Padding para el espacio alrededor del avatar
             // Espacio alrededor del avatar
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: <Widget>[
-                // Fila para el avatar y el nombre
+                //----------------------------Fila para el avatar y el nombre
                 const CircleAvatar(
                   radius: 40,
-                  backgroundImage: NetworkImage('https://live.staticflickr.com/65535/53752621454_c14ecc01ec_b.jpg',), // Reemplaza con la URL de la imagen
+                  backgroundImage: NetworkImage(
+                    'https://live.staticflickr.com/65535/53752621454_c14ecc01ec_b.jpg',
+                  ), // Reemplaza con la URL de la imagen
                 ),
                 const SizedBox(width: 16), // Espacio entre el avatar y el texto
-                // Expanded permite que el texto ocupe el espacio restante
+                //--------------------------- Expanded permite que el texto ocupe el espacio restante
                 Expanded(
                   child: Column(
                     // Columna para el nombre y los árboles

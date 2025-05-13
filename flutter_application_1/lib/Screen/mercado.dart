@@ -1,0 +1,2 @@
+//aqui va algo similar a like.dart pero en vez de ser rectangulos seran cuadrados que usaran 2 columnas, estos mostraran
+// ventas de productos con la informacion del nombre del productor y del del terreno
