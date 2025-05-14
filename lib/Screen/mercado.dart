@@ -19,76 +19,91 @@ class MercadoPage extends StatefulWidget {
 class Venta {
   final String nombre;
   final String ubicacion;
-  final double extencionParcela;
   final String propietario;
   int cantidadArboles;
   int produccionAnual;
+  int produccionDisponible;
+  double precio;
   final String imageUrl;
 
   Venta({
     // Constructor de la clase Parcela
     required this.nombre,
     required this.ubicacion,
-    required this.extencionParcela,
     required this.propietario,
     required this.cantidadArboles,
     required this.produccionAnual,
+    required this.produccionDisponible,
+    required this.precio,
     required this.imageUrl,
   });
 }
 
 // se creara la pagina para mostrar los datos de forma ordendana en una viewlist
+//la conversion de arbol por cantidad de estas es de 200kg por arbol y se expresa en toneladas
+//el precio se basa en la cantidad de bins disponibles y el precio por bin
+//tomando en cuenta que un bin hace aprox unos 350kg
+//el peso de 350kg es de 0.35 toneladas
+//el precio por bin es de 100.000 pesos chilenos
 class _CreacionDeVentas extends State<MercadoPage> {
   // Datos de ejemplo (reemplaza esto con tus datos reales)
   final List<Venta> _venta = [
     Venta(
       nombre: "Canto del Angel",
       ubicacion: "Marchigue",
-      extencionParcela: 52.8,
+      //extencionParcela: 52.8,
       propietario: "Juan Hecheverria",
-      cantidadArboles:
-          8500, //mas adelante la produccion se calculara en base a la cantidad de arboles y un aproximado de la edad de estos
+      cantidadArboles:8500, //mas adelante la produccion se calculara en base a la cantidad de arboles y un aproximado de la edad de estos
       produccionAnual: 1700, //toneladas
+      produccionDisponible: 200, //toneladas o 70 bins
+      precio: 57142857, //precio total por la cantidad de bins
       imageUrl: 'https://rastro.com/fotos3/2024/02/24/12150484_foto4.jpg',
     ),
     Venta(
       nombre: "Los Qeules",
       ubicacion: "Cauquenes",
-      extencionParcela: 1.5,
+      //extencionParcela: 1.5,
       propietario: "Manuel Martinez",
-      cantidadArboles:
-          720, //la media que se tomara por arbol en kilos y se pasara a toneladas sera de 200
+      cantidadArboles:720, //la media que se tomara por arbol en kilos y se pasara a toneladas sera de 200
       produccionAnual: 144,
+      produccionDisponible:42 ,
+      precio: 12000000,
       imageUrl:
           'https://www.turismodeobservacion.com/media/fotografias/campo-ganadero-en-la-region-de-la-araucania-chile-72384-xl.jpg',
     ),
     Venta(
       nombre: "Las liebres",
       ubicacion: "Valparaíso",
-      extencionParcela: 25.1,
+      //extencionParcela: 25.1,
       propietario: "Martin vasquez",
       cantidadArboles: 2200,
       produccionAnual: 440,
+      produccionDisponible: 3,
+      precio: 857000,
       imageUrl:
           'https://andinoblob.blob.core.windows.net/media/filer_public_thumbnails/filer_public/b3/bd/b3bda1aa-bbc9-47e0-8990-ff72cf1c613f/valparaiso.jpg__1440x760_q85_subsampling-2.jpg',
     ),
     Venta(
       nombre: "Ex Fundo el Peral",
       ubicacion: "Parral",
-      extencionParcela: 10.0,
+      //extencionParcela: 10.0,
       propietario: "Sergio Masias",
       cantidadArboles: 100,
       produccionAnual: 20,
+      produccionDisponible: 0,
+      precio: 0,
       imageUrl:
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYgdQ1IXazX-c70Zwxe9Z5WC43_pdNrui1Rg&s',
     ),
     Venta(
       nombre: "Microlote A",
       ubicacion: "Molina",
-      extencionParcela: 0.5,
+      //extencionParcela: 0.5,
       propietario: "Gerardo jimenez",
       cantidadArboles: 100,
-      produccionAnual: 20,
+      produccionAnual: 20,  
+      produccionDisponible: 1,
+      precio: 285000,
       imageUrl:
           'https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/cl/29/77/30/18/29773018_c17d9c',
     ),
@@ -123,8 +138,8 @@ class _CreacionDeVentas extends State<MercadoPage> {
                         content: Text(
                           'Ubicación: ${_venta[index].ubicacion}\n'
                           'Propietario: ${_venta[index].propietario}\n'
-                          'Extensión: ${_venta[index].extencionParcela} ha\n'
-                          'Producción anual: ${_venta[index].produccionAnual} toneladas',
+                          'Produccion disponible: ${_venta[index].produccionDisponible} toneladas',
+                          'Precio: \$${_venta[index].precio}',
                         ),
                         actions: [
                           TextButton(
@@ -142,7 +157,7 @@ class _CreacionDeVentas extends State<MercadoPage> {
           },
         ),
       ),
-      //agregar un boton flotante para agregar una nueva parcela
+      //agregar un boton flotante para agregar una nueva parcela------------------------------------------Agregar botones estaticos para agregar ventas y otras cosas como el centro de acopio
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Acción al presionar el botón flotante
@@ -152,11 +167,11 @@ class _CreacionDeVentas extends State<MercadoPage> {
             builder:
                 (context) => AlertDialog(
                   title: Text(
-                    "¿Desea agregar una nueva parcela?",
+                    "¿Desea Vender un producto?",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   content: Text(
-                    "Recuerda que tener en cuenta los valores de la parcela, una vez agregada no podras editar ciertos aspectos como su ubicacion o nombre, se precavido",
+                    "Recuerda cotizar los valores del producto en tu zona o unirte a un centro de acopio, una vez publicada no podras editar ciertos aspectos como su ubicacion, se precavido",
                   ),
                   actions: <Widget>[
                     TextButton(
@@ -252,9 +267,7 @@ class _ParcelaCard extends StatelessWidget {
                       color: Color.fromARGB(255, 255, 37, 37),
                     ),
                     const SizedBox(width: 2),
-                    Text(
-                      venta.ubicacion,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    Text(venta.ubicacion,style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ), // Usa la ubicación de la parcela
                   ],
                 ),
@@ -266,16 +279,33 @@ class _ParcelaCard extends StatelessWidget {
                 Row(
                   //-----------------------------diseño de la cantidad de arboles
                   children: <Widget>[
-                    const Icon(Icons.forest, size: 14, color: Colors.green),
+                    const Icon(Icons.fire_truck, size: 14, color: Colors.green),
                     const SizedBox(width: 2),
                     Text(
-                      '${venta.cantidadArboles} árboles',
+                      '${venta.produccionDisponible} Frutas',
                       style: const TextStyle(
                         fontSize: 14,
                       ), // Usa la cantidad de árboles
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 4,
+                ), //------------------------------------------------------- Espacio entre la ubicación y la extensión
+                Row(
+                  //----------------------------diseño de la ubicacion
+                  children: <Widget>[
+                    const Icon(
+                      Icons.money_rounded,
+                      size: 12,
+                      color: Color.fromARGB(240, 255, 217, 0),
+                    ),
+                    const SizedBox(width: 2),
+                    Text('Precio: \$${venta.precio.toString()}'),
+                  ],
+                ),
+
+                
               ],
             ),
           ),
