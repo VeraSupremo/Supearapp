@@ -26,9 +26,8 @@ class ProfilePage extends StatelessWidget {
                 //----------------------------Fila para el avatar y el nombre
                 const CircleAvatar(
                   radius: 40,
-                  backgroundImage: NetworkImage(
-                    'https://live.staticflickr.com/65535/53752621454_c14ecc01ec_b.jpg',
-                  ), // Reemplaza con la URL de la imagen
+                  backgroundImage: AssetImage('assets/pictures/p1.jpg'),
+                   // Reemplaza con la URL de la imagen
                 ),
                 const SizedBox(width: 16), // Espacio entre el avatar y el texto
                 //--------------------------- Expanded permite que el texto ocupe el espacio restante

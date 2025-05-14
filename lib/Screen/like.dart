@@ -161,7 +161,7 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Si",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),),
+                      child: Text("Si",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),), //en todo este lugar es un mensaje que avisa si quiere crear una nueva parcela
                     ),
                     TextButton(
                       onPressed: () {
