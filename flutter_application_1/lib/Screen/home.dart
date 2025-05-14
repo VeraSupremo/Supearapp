@@ -89,9 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(radius: 50,
-                      backgroundImage: AssetImage('assets/pictures/p1.jpg'),
-                    ),
+                    CircleAvatar(radius: 50,backgroundImage: AssetImage('assets/pictures/p1.jpg'),),
                     SizedBox(height: 5), // Espacio entre el avatar y el texto
                     Text('Nombre de Usuario',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),
                     ),

@@ -140,6 +140,47 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
           },
         ),
       ),
+      //agregar un boton flotante para agregar una nueva parcela
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Acción al presionar el botón flotante
+          // Aquí puedes agregar la lógica para agregar una nueva parcela
+          showDialog(
+            context: context,
+            builder:
+                (context) => AlertDialog(
+                  title: Text(
+                    "¿Desea agregar una nueva parcela?",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  content: Text(
+                    "Recuerda que tener en cuenta los valores de la parcela, una vez agregada no podras editar ciertos aspectos como su ubicacion o nombre, se precavido",
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Si",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("No",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),),
+                    ),
+                  ],
+                  backgroundColor: Color.fromARGB(235, 248, 248, 248),
+                ),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 36, 116, 29),
+        child: const Icon(
+          Icons.agriculture_outlined,
+          color: Color.fromARGB(255, 255, 253, 253),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
@@ -236,9 +277,9 @@ class _ParcelaCard extends StatelessWidget {
               ],
             ),
           ),
+          // Ubicación del botón
         ],
       ),
-
       //aqui se puede agregar un boton para ver mas detalles de la parcela o diseños bajos las cards
     );
   }

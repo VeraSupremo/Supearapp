@@ -47,17 +47,9 @@ class ProfilePage extends StatelessWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: <Widget>[
-                          const Icon(
-                            // Icons.park_outlined,
-                            Icons.forest,
-                            size: 16,
-                            color: Colors.green,
-                          ),
+                          const Icon(Icons.forest,size: 16,color: Colors.green,                          ),
                           const SizedBox(width: 4),
-                          const Text(
-                            '123 árboles', // Reemplaza con el número de árboles
-                            style: TextStyle(fontSize: 14),
-                          ),
+                          const Text('123 árboles', style: TextStyle(fontSize: 14),),// Reemplaza con el número de árboles),
                         ],
                       ),
                     ],
