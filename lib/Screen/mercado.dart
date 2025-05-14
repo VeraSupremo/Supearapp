@@ -119,12 +119,12 @@ class _CreacionDeVentas extends State<MercadoPage> {
                   context: context,
                   builder:
                       (context) => AlertDialog(
-                        title: Text('Detalles de ${_parcelas[index].nombre}'),
+                        title: Text('Detalles de ${_venta[index].nombre}'),
                         content: Text(
-                          'Ubicación: ${_parcelas[index].ubicacion}\n'
-                          'Propietario: ${_parcelas[index].propietario}\n'
-                          'Extensión: ${_parcelas[index].extencionParcela} ha\n'
-                          'Producción anual: ${_parcelas[index].produccionAnual} toneladas',
+                          'Ubicación: ${_venta[index].ubicacion}\n'
+                          'Propietario: ${_venta[index].propietario}\n'
+                          'Extensión: ${_venta[index].extencionParcela} ha\n'
+                          'Producción anual: ${_venta[index].produccionAnual} toneladas',
                         ),
                         actions: [
                           TextButton(
@@ -189,9 +189,9 @@ class _CreacionDeVentas extends State<MercadoPage> {
 
 // Esta clase representa una tarjeta que muestra la información de una parcela
 class _ParcelaCard extends StatelessWidget {
-  const _ParcelaCard({required this.parcela});
+  const _ParcelaCard({required this.venta});
 
-  final Parcela parcela;
+  final Venta venta;
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +211,7 @@ class _ParcelaCard extends StatelessWidget {
             width: double.infinity, // Ocupa todo el ancho disponible
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(parcela.imageUrl),
+                image: NetworkImage(venta.imageUrl),
                 fit: BoxFit.cover,
               ),
               borderRadius: const BorderRadius.vertical(
@@ -233,7 +233,7 @@ class _ParcelaCard extends StatelessWidget {
               children: <Widget>[
                 // Usa el nombre de la parcela
                 Text(
-                  parcela.nombre,
+                  venta.nombre,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -253,7 +253,7 @@ class _ParcelaCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 2),
                     Text(
-                      parcela.ubicacion,
+                      venta.ubicacion,
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ), // Usa la ubicación de la parcela
                   ],
@@ -269,7 +269,7 @@ class _ParcelaCard extends StatelessWidget {
                     const Icon(Icons.forest, size: 14, color: Colors.green),
                     const SizedBox(width: 2),
                     Text(
-                      '${parcela.cantidadArboles} árboles',
+                      '${venta.cantidadArboles} árboles',
                       style: const TextStyle(
                         fontSize: 14,
                       ), // Usa la cantidad de árboles
