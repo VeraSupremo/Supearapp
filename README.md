@@ -1,16 +1,14 @@
-# flutter_application_1
+# SupearApp 
+## Maqueta funcional 
+### integrante: Martin Vera      Profesor: Manuel Moscoso
 
-A new Flutter project.
+SupearApp es una aplicacion que permitira a los productores de peras tanto pequeños como grandes el poder calcular una media de produccion dependiendo de la extencion y de la cantidad de arboles.
+El funcionamiento De la app es el siguiente:
+partes en la pantalla de splash donde se vera el logo de la aplicacion para luego dar paso a la pantalla de Plantaciones, ahi hay un menu lateral en el cual se podra acceder a cada una de las pestañas disponibles como:
+ * Perfil
+ * Mercado
+ * Plantaciones
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ En plantaciones se encuentran las parcelas de los usuarios donde se podran ver la cantidad de arboles, la extencion, la ubicacion y la produccion estimada.
+ En mercado se podra encontrar publicaciones tuyas o de otros usuarios donde se daran las opciones de formar centros de acopio que serian como grupos puestos por ubicacion para poder facilitar la venta y compra de productos.
+ 
