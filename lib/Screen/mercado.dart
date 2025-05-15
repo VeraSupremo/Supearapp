@@ -160,7 +160,7 @@ class _CreacionDeVentas extends State<MercadoPage> {
                         ),
                         actions: [
                           TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
+                            onPressed: ()=> Navigator.of(context).pop(),
                             child: const Text('Cerrar'),
                           ), // cierra el dialogo al tocar el boton
                         ],
