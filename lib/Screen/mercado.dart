@@ -113,6 +113,18 @@ class _CreacionDeVentas extends State<MercadoPage> {
       imageUrl:
           'https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/cl/29/77/30/18/29773018_c17d9c',
     ),
+    Venta(
+      nombre: "Microlote b",
+      ubicacion: "Molina",
+      //extencionParcela: 0.5,
+      propietario: "Jostin Jimenez",
+      cantidadArboles: 100,
+      produccionAnual: 20,
+      produccionDisponible: 2,
+      precio: 571.000,
+      imageUrl:
+          'https://www.ciperchile.cl/wp-content/uploads/campo.jpg',
+    ),
   ];
   @override
   Widget build(BuildContext context) {
@@ -226,19 +238,19 @@ class _CreacionDeVentas extends State<MercadoPage> {
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.edit, color: Color.fromARGB(255, 243, 239, 7)),
-            activeIcon: const Icon(Icons.edit_note, color: Color.fromARGB(255, 36, 116, 29)),
+            activeIcon: const Icon(Icons.edit_note, color: Color.fromARGB(255, 36, 116, 29),size: 30),
             label: "Tus Publicaciones",
             backgroundColor: const Color.fromARGB(255, 95, 170, 88),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.store, color:  Color.fromARGB(255, 190, 0, 0)),
-            activeIcon: const Icon(Icons.storefront, color:Color.fromARGB(255, 36, 116, 29)),
+            icon: const Icon(Icons.store, color:  Color.fromARGB(255, 190, 0, 0),size: 30),
+            activeIcon: const Icon(Icons.storefront, color:Color.fromARGB(255, 36, 116, 29),size: 30,),
             label: "Centro de ventas",
             backgroundColor: const Color.fromARGB(255, 190, 0, 0),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.group, color: Color.fromARGB(255, 111, 0, 255)),
-            activeIcon: const Icon(Icons.group_outlined, color: Color.fromARGB(255, 201, 166, 233)),
+            activeIcon: const Icon(Icons.group_outlined, color: Color.fromARGB(255, 201, 166, 233),size: 30),
             label: "Centro de Acopio",
             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           ),
@@ -330,7 +342,7 @@ class _ParcelaCard extends StatelessWidget {
                     const Icon(Icons.fire_truck, size: 14, color: Colors.green),
                     const SizedBox(width: 2),
                     Text(
-                      '${venta.produccionDisponible} Frutas',
+                      '${venta.produccionDisponible} Ton',
                       style: const TextStyle(
                         fontSize: 14,
                       ), // Usa la cantidad de árboles

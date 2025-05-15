@@ -12,7 +12,12 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         //barra superior
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary, // Cambia el color de la AppBar
-        backgroundColor: const Color.fromARGB(255,20,100,22,), // Cambia el color de la AppBar
+        backgroundColor: const Color.fromARGB(
+          255,
+          20,
+          100,
+          22,
+        ), // Cambia el color de la AppBar
         title: Text(title),
       ),
       body: Column(
@@ -27,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                 const CircleAvatar(
                   radius: 40,
                   backgroundImage: AssetImage('assets/pictures/p1.jpg'),
-                   // Reemplaza con la URL de la imagen
+                  // Reemplaza con la URL de la imagen
                 ),
                 const SizedBox(width: 16), // Espacio entre el avatar y el texto
                 //--------------------------- Expanded permite que el texto ocupe el espacio restante
@@ -46,9 +51,16 @@ class ProfilePage extends StatelessWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: <Widget>[
-                          const Icon(Icons.forest,size: 16,color: Colors.green,                          ),
+                          const Icon(
+                            Icons.forest,
+                            size: 16,
+                            color: Colors.green,
+                          ),
                           const SizedBox(width: 4),
-                          const Text('123 árboles', style: TextStyle(fontSize: 14),),// Reemplaza con el número de árboles),
+                          const Text(
+                            '123 árboles',
+                            style: TextStyle(fontSize: 14),
+                          ), // Reemplaza con el número de árboles),
                         ],
                       ),
                     ],
@@ -57,8 +69,20 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(), // Línea divisoria
-
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              children: [
+                const Expanded(child: Divider(thickness: 1)),
+                //aqui debe ir otro padding para el icono de la camara y la linea
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Icon(Icons.exit_to_app,size: 32,color: Color.fromARGB(255, 197, 1, 1),),
+                ),
+                const Expanded(child: Divider(thickness: 1)),
+              ],
+            ),
+          ),
           Expanded(
             child: ListView(
               // Lista de elementos

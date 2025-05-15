@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'profile.dart';
+import 'mercado.dart'; // Importa la página de Mercado.
 //----------------------------------------------------Cambiar el nombre de este para que sea algo como pearMenu
 // Cambiado el nombre de la clase para reflejar su propósito
 class ProduccionesPage extends StatefulWidget {
@@ -109,7 +110,94 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
           ],
         ), // Usa el título pasado al widget
       ),
-      body: Padding(
+      drawer: Drawer(
+        //añadir a listview al drawer. Esto asegura que el usuario pueda desplazarse
+        //a través de las opciones en el cajón si no hay suficiente espacio vertical
+        // para encajar todo.
+        // El Drawer es un widget que se desliza desde el lado de la pantalla
+        backgroundColor: Color.fromARGB(255, 246, 252, 246),
+        child: ListView(
+          // Importante: eliminar cualquier relleno de la ListView
+          padding: EdgeInsets.zero,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 0,right: 0,top: 22,bottom: 22,),
+
+              //padding: const EdgeInsets.all(4.2),
+              child: const DrawerHeader(
+                // Encabezado del menú lateral
+                // decoration:PictureLayer.network('https://live.staticflickr.com/65535/53752621454_c14ecc01ec_b'),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 190, 238, 144),
+                  // borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(radius: 50,backgroundImage: AssetImage('assets/pictures/p1.jpg'),),
+                    SizedBox(height: 5), // Espacio entre el avatar y el texto
+                    Text('Nombre de Usuario',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            /*ListTile(
+              title: const Text('Produccion de los fundos'),
+              onTap:(){
+                Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProduccionesPage(title: "Produccion de los fundos",),));
+              },
+            ),*/
+            ListTile(
+              // de aqui en adelante son los elementos del menu lateral
+              leading: const Icon(Icons.home_work_outlined),
+              title: const Text('Inicio'),
+              onTap: () {
+                // Actualiza el estado de la aplicación
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person_2_outlined),
+              title: const Text('Usuario'),
+              onTap: () {
+                // Update the state of the app
+                //_onItemTapped(1);//------------------------------------------------------poner navegator push
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfilePage(title: "Perfil"),
+                  ),
+                );
+                // Then close the drawer
+                //Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.store),
+              title: const Text('Mercado'),
+              onTap: () {
+                // Update the state of the app
+                // _onItemTapped(2);//------------------------------------------------------poner navegator push
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => const MercadoPage(title: "Mercado"),
+                  ),
+                );
+                // Then close the drawer
+                //Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+
+      body: Padding( // Padding para el espacio alrededor de la lista
         padding: const EdgeInsets.all(16.0,), // Ajusta la tarjeta para que no se vea fea
         child: ListView.builder(
           itemCount:
@@ -260,7 +348,7 @@ class _ParcelaCard extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(parcela.imageUrl),
-                fit: BoxFit.cover,
+                fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
               ),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(10.0),
@@ -269,10 +357,7 @@ class _ParcelaCard extends StatelessWidget {
             ),
           ),
 
-          const Divider(
-            height: 2,
-            color: Color.fromARGB(255, 36, 116, 29),
-          ), // Línea divisoria entre la imagen y el contenido
+          const Divider(height: 2,color: Color.fromARGB(255, 36, 116, 29),), // Línea divisoria entre la imagen y el contenido
 
           Padding(
             padding: const EdgeInsets.all(8.0), // genera un espacio
