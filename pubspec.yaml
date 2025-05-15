@@ -90,8 +90,8 @@ flutter:
 flutter_native_splash:
   color: "#42a5f5"
   image: assets/pictures/IconoApp.png
-  android: true
-  ios: true
+  android: false
+  ios: false
   web: false
   fullscreen: true
   android_gravity: center

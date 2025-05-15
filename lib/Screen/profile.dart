@@ -12,12 +12,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         //barra superior
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary, // Cambia el color de la AppBar
-        backgroundColor: const Color.fromARGB(
-          255,
-          20,
-          100,
-          22,
-        ), // Cambia el color de la AppBar
+        backgroundColor: const Color.fromARGB(255,20,100,22,), // Cambia el color de la AppBar
         title: Text(title),
       ),
       body: Column(

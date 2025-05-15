@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'profile.dart';
 import 'mercado.dart'; // Importa la página de Mercado.
+
 //----------------------------------------------------Cambiar el nombre de este para que sea algo como pearMenu
 // Cambiado el nombre de la clase para reflejar su propósito
 class ProduccionesPage extends StatefulWidget {
@@ -101,15 +102,26 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[ //dependiendo de la liena que vqya primero sera el el lado en el que se mostrara 
-            SizedBox(width: 60,height: 60, child: Image.asset('assets/pictures/IconoApp.png'),),
+          children: <Widget>[
+            //dependiendo de la liena que vqya primero sera el el lado en el que se mostrara
+            SizedBox(
+              width: 60,
+              height: 60,
+              child: Image.asset('assets/pictures/IconoApp.png'),
+            ),
             Text(widget.title),
-            SizedBox(width: 60,height: 60, child: Image.asset('assets/pictures/IconoApp.png'),),
-
-             // Logo de la aplicación
+            SizedBox(
+              width: 60,
+              height: 60,
+              child: Image.asset('assets/pictures/IconoApp.png'),
+            ),
+            // Logo de la aplicación
           ],
         ), // Usa el título pasado al widget
+        backgroundColor: const Color.fromARGB(117, 20, 100, 23),      // Cambia el color de la AppBar
       ),
+
+      //poner un texto en el appbar que diga "Producciones"
       drawer: Drawer(
         //añadir a listview al drawer. Esto asegura que el usuario pueda desplazarse
         //a través de las opciones en el cajón si no hay suficiente espacio vertical
@@ -128,15 +140,33 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
                 // Encabezado del menú lateral
                 // decoration:PictureLayer.network('https://live.staticflickr.com/65535/53752621454_c14ecc01ec_b'),
                 decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      'https://www.reforestemos.org/content/uploads/bosque-nativo-araucaria-2.jpg',
+                    ),
+                    fit:
+                        BoxFit
+                            .cover, // Ajusta la imagen para cubrir el contenedor
+                  ),
                   color: Color.fromARGB(255, 190, 238, 144),
                   // borderRadius: BorderRadius.circular(10), // Bordes redondeados
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(radius: 50,backgroundImage: AssetImage('assets/pictures/p1.jpg'),),
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage('assets/pictures/p1.jpg'),
+                    ),
                     SizedBox(height: 5), // Espacio entre el avatar y el texto
-                    Text('Nombre de Usuario',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),
+
+                    Text(
+                      'Nombre de Usuario',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 255, 255, 255),
+                      ),
                     ),
                   ],
                 ),
@@ -185,8 +215,7 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder:
-                        (context) => const MercadoPage(title: "Mercado"),
+                    builder: (context) => const MercadoPage(title: "Mercado"),
                   ),
                 );
                 // Then close the drawer
@@ -197,8 +226,10 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
         ),
       ),
 
-      body: Padding( // Padding para el espacio alrededor de la lista
+      body: Padding(
+        // Padding para el espacio alrededor de la lista
         padding: const EdgeInsets.all(16.0,), // Ajusta la tarjeta para que no se vea fea
+        
         child: ListView.builder(
           itemCount:
               _parcelas.length, // Cuenta el número de parcelas en la lista
@@ -300,20 +331,39 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
         },
 
         items: [
-          BottomNavigationBarItem(icon: const Icon(Icons.edit,color: Color.fromARGB(255, 241, 177, 0),),
-            activeIcon: const Icon(Icons.forest_rounded,color: Color.fromARGB(255, 36, 116, 29),),
+          BottomNavigationBarItem(
+            icon: const Icon(
+              Icons.edit,
+              color: Color.fromARGB(255, 241, 177, 0),
+            ),
+            activeIcon: const Icon(
+              Icons.forest_rounded,
+              color: Color.fromARGB(255, 36, 116, 29),
+            ),
             label: "Editar Publicaciones",
             backgroundColor: const Color.fromARGB(255, 95, 170, 88),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.person_3,color: Color.fromARGB(255, 1, 85, 241),),
-            activeIcon: const Icon(Icons.person_3_outlined,color: Color.fromARGB(255, 36, 116, 29),),
+            icon: const Icon(
+              Icons.person_3,
+              color: Color.fromARGB(255, 1, 85, 241),
+            ),
+            activeIcon: const Icon(
+              Icons.person_3_outlined,
+              color: Color.fromARGB(255, 36, 116, 29),
+            ),
             label: "Tus Publicaciones",
             backgroundColor: const Color.fromARGB(255, 190, 0, 0),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.delete_rounded,color: Color.fromARGB(255, 61, 61, 61),),
-            activeIcon: const Icon(Icons.delete_forever,color: Color.fromARGB(255, 158, 3, 3),),
+            icon: const Icon(
+              Icons.delete_rounded,
+              color: Color.fromARGB(255, 61, 61, 61),
+            ),
+            activeIcon: const Icon(
+              Icons.delete_forever,
+              color: Color.fromARGB(255, 158, 3, 3),
+            ),
             label: "Borrar",
             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           ),
@@ -353,11 +403,19 @@ class _ParcelaCard extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(10.0),
               ), //Bordes redondeados en la parte superior
-              color: const Color.fromARGB(248,212,179,255,), // Color de fondo en caso de que la imagen no cargue
+              color: const Color.fromARGB(
+                248,
+                212,
+                179,
+                255,
+              ), // Color de fondo en caso de que la imagen no cargue
             ),
           ),
 
-          const Divider(height: 2,color: Color.fromARGB(255, 36, 116, 29),), // Línea divisoria entre la imagen y el contenido
+          const Divider(
+            height: 2,
+            color: Color.fromARGB(255, 36, 116, 29),
+          ), // Línea divisoria entre la imagen y el contenido
 
           Padding(
             padding: const EdgeInsets.all(8.0), // genera un espacio
