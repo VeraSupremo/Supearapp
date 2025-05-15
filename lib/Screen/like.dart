@@ -98,12 +98,19 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
     //esta es la construccion del wirdget que mostrara las parcelistas
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title), // Usa el título pasado al widget
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[ //dependiendo de la liena que vqya primero sera el el lado en el que se mostrara 
+            SizedBox(width: 60,height: 60, child: Image.asset('assets/pictures/IconoApp.png'),),
+            Text(widget.title),
+            SizedBox(width: 60,height: 60, child: Image.asset('assets/pictures/IconoApp.png'),),
+
+             // Logo de la aplicación
+          ],
+        ), // Usa el título pasado al widget
       ),
       body: Padding(
-        padding: const EdgeInsets.all(
-          16.0,
-        ), // Ajusta la tarjeta para que no se vea fea
+        padding: const EdgeInsets.all(16.0,), // Ajusta la tarjeta para que no se vea fea
         child: ListView.builder(
           itemCount:
               _parcelas.length, // Cuenta el número de parcelas en la lista
@@ -219,7 +226,7 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
           BottomNavigationBarItem(
             icon: const Icon(Icons.delete_rounded,color: Color.fromARGB(255, 61, 61, 61),),
             activeIcon: const Icon(Icons.delete_forever,color: Color.fromARGB(255, 158, 3, 3),),
-            label: "Borrar Publicaciones",
+            label: "Borrar",
             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           ),
         ],

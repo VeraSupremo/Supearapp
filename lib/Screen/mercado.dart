@@ -227,7 +227,7 @@ class _CreacionDeVentas extends State<MercadoPage> {
           BottomNavigationBarItem(
             icon: const Icon(Icons.edit, color: Color.fromARGB(255, 243, 239, 7)),
             activeIcon: const Icon(Icons.edit_note, color: Color.fromARGB(255, 36, 116, 29)),
-            label: "Editar Publicaciones",
+            label: "Tus Publicaciones",
             backgroundColor: const Color.fromARGB(255, 95, 170, 88),
           ),
           BottomNavigationBarItem(
@@ -278,12 +278,7 @@ class _ParcelaCard extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(10.0),
               ), //Bordes redondeados en la parte superior
-              color: const Color.fromARGB(
-                248,
-                212,
-                179,
-                255,
-              ), // Color de fondo en caso de que la imagen no cargue
+              color: const Color.fromARGB(248,212,179,255,), // Color de fondo en caso de que la imagen no cargue
             ),
           ),
 

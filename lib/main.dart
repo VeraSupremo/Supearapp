@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'Screen/home.dart';
+import 'Screen/like.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'), 
+        home: const ProduccionesPage(title: 'SUPEARAPP'), 
     );
   }
 }
