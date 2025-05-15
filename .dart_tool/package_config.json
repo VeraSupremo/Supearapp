@@ -62,6 +62,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "cupertino_icons",
+      "rootUri": "file:///C:/Users/Asus/AppData/Local/Pub/Cache/hosted/pub.dev/cupertino_icons-1.0.8",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///C:/Users/Asus/AppData/Local/Pub/Cache/hosted/pub.dev/fake_async-1.3.2",
       "packageUri": "lib/",
@@ -260,7 +266,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-05-14T21:42:32.630685Z",
+  "generated": "2025-05-15T00:01:22.983628Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///D:/Dev/flutter_windows_3.29.2-stable/flutter",

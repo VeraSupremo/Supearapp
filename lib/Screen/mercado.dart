@@ -2,7 +2,6 @@
 // ventas de productos con la informacion del nombre del productor y del del terreno
 import 'package:flutter/material.dart';
 
-
 //----------------------------------------------------Cambiar el nombre de este para que sea algo como pearMenu
 // Cambiado el nombre de la clase para reflejar su propósito
 class MercadoPage extends StatefulWidget {
@@ -40,6 +39,8 @@ class Venta {
   });
 }
 
+
+
 // se creara la pagina para mostrar los datos de forma ordendana en una viewlist
 //la conversion de arbol por cantidad de estas es de 200kg por arbol y se expresa en toneladas
 //el precio se basa en la cantidad de bins disponibles y el precio por bin
@@ -48,16 +49,19 @@ class Venta {
 //el precio por bin es de 100.000 pesos chilenos
 class _CreacionDeVentas extends State<MercadoPage> {
   // Datos de ejemplo (reemplaza esto con tus datos reales)
+  int selectedIndex = 0; //esta variable obtiene un indice desde 0 para hacer funcionar la barra de navegacion
+
   final List<Venta> _venta = [
     Venta(
       nombre: "Canto del Angel",
       ubicacion: "Marchigue",
       //extencionParcela: 52.8,
       propietario: "Juan Hecheverria",
-      cantidadArboles:8500, //mas adelante la produccion se calculara en base a la cantidad de arboles y un aproximado de la edad de estos
+      cantidadArboles:
+          8500, //mas adelante la produccion se calculara en base a la cantidad de arboles y un aproximado de la edad de estos
       produccionAnual: 1700, //toneladas
       produccionDisponible: 200, //toneladas o 70 bins
-      precio: 57142857, //precio total por la cantidad de bins
+      precio: 57142.857, //precio total por la cantidad de bins
       imageUrl: 'https://rastro.com/fotos3/2024/02/24/12150484_foto4.jpg',
     ),
     Venta(
@@ -65,10 +69,11 @@ class _CreacionDeVentas extends State<MercadoPage> {
       ubicacion: "Cauquenes",
       //extencionParcela: 1.5,
       propietario: "Manuel Martinez",
-      cantidadArboles:720, //la media que se tomara por arbol en kilos y se pasara a toneladas sera de 200
+      cantidadArboles:
+          720, //la media que se tomara por arbol en kilos y se pasara a toneladas sera de 200
       produccionAnual: 144,
-      produccionDisponible:42 ,
-      precio: 12000000,
+      produccionDisponible: 42,
+      precio: 12000.000,
       imageUrl:
           'https://www.turismodeobservacion.com/media/fotografias/campo-ganadero-en-la-region-de-la-araucania-chile-72384-xl.jpg',
     ),
@@ -80,7 +85,7 @@ class _CreacionDeVentas extends State<MercadoPage> {
       cantidadArboles: 2200,
       produccionAnual: 440,
       produccionDisponible: 3,
-      precio: 857000,
+      precio: 857.000,
       imageUrl:
           'https://andinoblob.blob.core.windows.net/media/filer_public_thumbnails/filer_public/b3/bd/b3bda1aa-bbc9-47e0-8990-ff72cf1c613f/valparaiso.jpg__1440x760_q85_subsampling-2.jpg',
     ),
@@ -102,9 +107,9 @@ class _CreacionDeVentas extends State<MercadoPage> {
       //extencionParcela: 0.5,
       propietario: "Gerardo jimenez",
       cantidadArboles: 100,
-      produccionAnual: 20,  
+      produccionAnual: 20,
       produccionDisponible: 1,
-      precio: 285000,
+      precio: 285.000,
       imageUrl:
           'https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/cl/29/77/30/18/29773018_c17d9c',
     ),
@@ -121,8 +126,7 @@ class _CreacionDeVentas extends State<MercadoPage> {
           16.0,
         ), // Ajusta la tarjeta para que no se vea fea
         child: ListView.builder(
-          itemCount:
-              _venta.length, // Cuenta el número de parcelas en la lista
+          itemCount: _venta.length, // Cuenta el número de parcelas en la lista
           itemBuilder: (context, index) {
             // Crea una tarjeta para cada parcela
 
@@ -139,7 +143,7 @@ class _CreacionDeVentas extends State<MercadoPage> {
                         content: Text(
                           'Ubicación: ${_venta[index].ubicacion}\n'
                           'Propietario: ${_venta[index].propietario}\n'
-                          'Produccion disponible: ${_venta[index].produccionDisponible} toneladas',
+                          //'Produccion disponible: ${_venta[index].produccionDisponible} toneladas',
                           'Precio: \$${_venta[index].precio}',
                         ),
                         actions: [
@@ -158,7 +162,9 @@ class _CreacionDeVentas extends State<MercadoPage> {
           },
         ),
       ),
-      //agregar un boton flotante para agregar una nueva parcela------------------------------------------Agregar botones estaticos para agregar ventas y otras cosas como el centro de acopio
+
+      //agregar un boton persistente para agregar una nueva parcela------------------------------------------Agregar botones estaticos para agregar ventas y otras cosas como el centro de acopio
+      //persistentFooterButtons: barrapersistente,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Acción al presionar el botón flotante
@@ -179,13 +185,25 @@ class _CreacionDeVentas extends State<MercadoPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Si",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),), //en todo este lugar es un mensaje que avisa si quiere crear una nueva parcela
+                      child: Text(
+                        "Si",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ), //en todo este lugar es un mensaje que avisa si quiere crear una nueva parcela
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("No",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),),
+                      child: Text(
+                        "No",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                   backgroundColor: Color.fromARGB(235, 248, 248, 248),
@@ -193,12 +211,39 @@ class _CreacionDeVentas extends State<MercadoPage> {
           );
         },
         backgroundColor: const Color.fromARGB(255, 36, 116, 29),
-        child: const Icon(
-          Icons.agriculture_outlined,
-          color: Color.fromARGB(255, 255, 253, 253),
-        ),
+        child: const Icon(Icons.add, color: Color.fromARGB(255, 255, 253, 253)),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      //----------------------------------------------------------------------------------aqui ira la buttonactionbar
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: (value) {
+          setState(() {
+            selectedIndex = value;
+          });
+        },
+
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.edit, color: Color.fromARGB(255, 243, 239, 7)),
+            activeIcon: const Icon(Icons.edit_note, color: Color.fromARGB(255, 36, 116, 29)),
+            label: "Editar Publicaciones",
+            backgroundColor: const Color.fromARGB(255, 95, 170, 88),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.store, color:  Color.fromARGB(255, 190, 0, 0)),
+            activeIcon: const Icon(Icons.storefront, color:Color.fromARGB(255, 36, 116, 29)),
+            label: "Centro de ventas",
+            backgroundColor: const Color.fromARGB(255, 190, 0, 0),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.group, color: Color.fromARGB(255, 111, 0, 255)),
+            activeIcon: const Icon(Icons.group_outlined, color: Color.fromARGB(255, 201, 166, 233)),
+            label: "Centro de Acopio",
+            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -233,7 +278,12 @@ class _ParcelaCard extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(10.0),
               ), //Bordes redondeados en la parte superior
-              color: const Color.fromARGB(248,212,179,255,), // Color de fondo en caso de que la imagen no cargue
+              color: const Color.fromARGB(
+                248,
+                212,
+                179,
+                255,
+              ), // Color de fondo en caso de que la imagen no cargue
             ),
           ),
 
@@ -268,8 +318,10 @@ class _ParcelaCard extends StatelessWidget {
                       color: Color.fromARGB(255, 255, 37, 37),
                     ),
                     const SizedBox(width: 2),
-                    Text(venta.ubicacion,style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ), // Usa la ubicación de la parcela
+                    Text(
+                      venta.ubicacion,
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
                   ],
                 ),
 
@@ -298,15 +350,13 @@ class _ParcelaCard extends StatelessWidget {
                   children: <Widget>[
                     const Icon(
                       Icons.money_rounded,
-                      size: 12,
-                      color: Color.fromARGB(240, 255, 217, 0),
+                      size: 32,
+                      color: Color.fromARGB(239, 204, 174, 3),
                     ),
                     const SizedBox(width: 2),
                     Text('Precio: \$${venta.precio.toString()}'),
                   ],
                 ),
-
-                
               ],
             ),
           ),

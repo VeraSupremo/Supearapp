@@ -38,6 +38,8 @@ class Parcela {
 // se creara la pagina para mostrar los datos de forma ordendana en una viewlist
 class _CreacionDeParcelas extends State<ProduccionesPage> {
   // Datos de ejemplo (reemplaza esto con tus datos reales)
+  int selectedIndex =
+      0; // Variable para el índice seleccionado en el BottomNavigationBar
   final List<Parcela> _parcelas = [
     Parcela(
       nombre: "Canto del Angel",
@@ -161,13 +163,25 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Si",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),), //en todo este lugar es un mensaje que avisa si quiere crear una nueva parcela
+                      child: Text(
+                        "Si",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ), //en todo este lugar es un mensaje que avisa si quiere crear una nueva parcela
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("No",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),),
+                      child: Text(
+                        "No",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                   backgroundColor: Color.fromARGB(235, 248, 248, 248),
@@ -181,6 +195,35 @@ class _CreacionDeParcelas extends State<ProduccionesPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      //----------------------------------------------------------------------------------aqui ira la buttonactionbar
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: (value) {
+          setState(() {
+            selectedIndex = value;
+          });
+        },
+
+        items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.edit,color: Color.fromARGB(255, 241, 177, 0),),
+            activeIcon: const Icon(Icons.forest_rounded,color: Color.fromARGB(255, 36, 116, 29),),
+            label: "Editar Publicaciones",
+            backgroundColor: const Color.fromARGB(255, 95, 170, 88),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.person_3,color: Color.fromARGB(255, 1, 85, 241),),
+            activeIcon: const Icon(Icons.person_3_outlined,color: Color.fromARGB(255, 36, 116, 29),),
+            label: "Tus Publicaciones",
+            backgroundColor: const Color.fromARGB(255, 190, 0, 0),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.delete_rounded,color: Color.fromARGB(255, 61, 61, 61),),
+            activeIcon: const Icon(Icons.delete_forever,color: Color.fromARGB(255, 158, 3, 3),),
+            label: "Borrar Publicaciones",
+            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+          ),
+        ],
+      ),
     );
   }
 }

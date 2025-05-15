@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screen/profile.dart';
-import 'like.dart'; // Importa la página de Like
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'like.dart'; // Importa la página de Like.
+import 'mercado.dart'; // Importa la página de Mercado.
 //import 'profile.dart';
 
 void main() => runApp(const MyApp());
@@ -96,7 +98,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-
+            /*ListTile(
+              title: const Text('Produccion de los fundos'),
+              onTap:(){
+                Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProduccionesPage(title: "Produccion de los fundos",),));
+              },
+            ),*/
             ListTile(
               // de aqui en adelante son los elementos del menu lateral
               leading: const Icon(Icons.home_work_outlined),
@@ -109,9 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                     builder:
-                        (context) => const ProduccionesPage(
-                          title: "Produccion de Arboles",
-                        ),
+                        (context) => const ProduccionesPage(title: "Produccion de Campos",),
                   ),
                 );
                 // Then close the drawer
@@ -146,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                     builder:
-                        (context) => const ProduccionesPage(title: "Mercado"),
+                        (context) => const MercadoPage(title: "Mercado"),
                   ),
                 );
                 // Then close the drawer
