@@ -1,6 +1,7 @@
 # SupearApp 
 ## Maqueta funcional 
-### integrante: Martin Vera      Profesor: Manuel Moscoso
+### integrante: Martin Vera 
+### Profesor: Manuel Moscoso
 
 SupearApp es una aplicacion que permitira a los productores de peras tanto pequeños como grandes el poder calcular una media de produccion dependiendo de la extencion y de la cantidad de arboles.
 El funcionamiento De la app es el siguiente:
