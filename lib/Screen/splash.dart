@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'like.dart';
+import 'produccion.dart';
 
 class SplashPref extends StatefulWidget {
   const SplashPref({super.key, required this.title});
