@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'Screen/produccion.dart';
 import 'Screen/splash.dart';
+import 'theme/theme.dart';
+import 'theme/util.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,12 +15,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
+    TextTheme texTheme = createTextTheme(context, 'Josefin Sans', 'Notable');
+    MaterialTheme theme = MaterialTheme(texTheme);
     return MaterialApp(
       title: 'SUPEARAPP',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: brightness == Brightness.light? theme.light():theme.dark(), //cambia el tema de acrde al modo del selu 
       home: const SplashPref(title: 'SUPEARAPP'),
     );
   }
