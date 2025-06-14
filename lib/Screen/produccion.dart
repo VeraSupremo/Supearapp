@@ -13,9 +13,7 @@ class ProduccionesPage extends StatefulWidget {
   State<ProduccionesPage> createState() => _CreacionDeParcelas();
 }
 
-// la clase parcela sera la base de los datos a mostrar en la app
-//podria agregar uno que se llame "Produccion" para mostrar la produccion de cada parcela
-//y otro que diga el nombre del dueño de la parcela
+
 class Parcela {
   final String nombre;
   final String ubicacion;
