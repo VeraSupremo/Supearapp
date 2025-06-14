@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'Screen/produccion.dart';
-import 'Screen/splash.dart';
+import 'Screen/pages/produccion.dart';
+import 'Screen/pages/splash.dart';
 import 'theme/theme.dart';
 import 'theme/util.dart';
 
