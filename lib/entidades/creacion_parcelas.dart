@@ -1,56 +1,22 @@
 import 'package:flutter/material.dart';
-import 'profile.dart';
-import 'mercado.dart'; // Importa la página de Mercado.
-import '../entidades/creacion_parcelas.dart'; // Importa la clase de creación de parcelas
-import '../entidades/parcela.dart'; // Importa la base de clase Parcela
+import 'package:flutter_application_1/Screen/produccion.dart' as prod;
+import 'package:flutter_application_1/Screen/produccion.dart'; // Asegúrate de importar donde se define ProduccionesPage
+import 'parcela.dart';
+import '/Screen/profile.dart';
+import '/Screen/mercado.dart';
 
-//----------------------------------------------------Cambiar el nombre de este para que sea algo como pearMenu
-// Cambiado el nombre de la clase para reflejar su propósito
-class ProduccionesPage extends StatefulWidget {
-  const ProduccionesPage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<ProduccionesPage> createState() => CreacionDeParcelas();
-}
-
-
-/*class Parcela {
-  final String nombre;
-  final String ubicacion;
-  final double extencionParcela;
-  final String propietario;
-  int cantidadArboles;
-  int produccionAnual;
-  final String imageUrl;
-
-  Parcela({
-    // Constructor de la clase Parcela
-    required this.nombre,
-    required this.ubicacion,
-    required this.extencionParcela,
-    required this.propietario,
-    required this.cantidadArboles,
-    required this.produccionAnual,
-    required this.imageUrl,
-  });
-}*/
-
-// se creara la pagina para mostrar los datos de forma ordendana en una viewlist
-/*class _CreacionDeParcelas extends State<ProduccionesPage> {
-  // Datos de ejemplo (reemplaza esto con tus datos reales)
-  int selectedIndex =
-      0; // Variable para el índice seleccionado en el BottomNavigationBar
+class CreacionDeParcelas extends State<ProduccionesPage> {
+  int selectedIndex = 0;
+  
+  
   final List<Parcela> _parcelas = [
     Parcela(
       nombre: "Canto del Angel",
       ubicacion: "Marchigue",
       extencionParcela: 52.8,
       propietario: "Juan Hecheverria",
-      cantidadArboles:
-          8500, //mas adelante la produccion se calculara en base a la cantidad de arboles y un aproximado de la edad de estos
-      produccionAnual: 1700, //toneladas
+      cantidadArboles: 8500,
+      produccionAnual: 1700,
       imageUrl: 'https://rastro.com/fotos3/2024/02/24/12150484_foto4.jpg',
     ),
     Parcela(
@@ -261,7 +227,7 @@ class ProduccionesPage extends StatefulWidget {
                       ),
                 );
               },
-              child: ParcelaCard(
+              child: prod.ParcelaCard(
                 parcela: _parcelas[index],
               ), // Pasa la parcela actual al widget de tarjeta
             );
@@ -369,106 +335,6 @@ class ProduccionesPage extends StatefulWidget {
           ),
         ],
       ),
-    );
-  }
-}*/
-
-// Esta clase representa una tarjeta que muestra la información de una parcela
-class ParcelaCard extends StatelessWidget {
-  const ParcelaCard({super.key, required this.parcela});
-
-  final Parcela parcela;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          //---------------------------Todo el Diseño de las cards -------------------
-          Container(
-            //--------------------------------------------diseño de la imagen
-            height: 120,
-            width: double.infinity, // Ocupa todo el ancho disponible
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(parcela.imageUrl),
-                fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
-              ),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(10.0),
-              ), //Bordes redondeados en la parte superior
-              color: const Color.fromARGB(248,212,179,255,), // Color de fondo en caso de que la imagen no cargue
-            ),
-          ),
-
-          const Divider(
-            height: 2,
-            color: Color.fromARGB(255, 36, 116, 29),
-          ), // Línea divisoria entre la imagen y el contenido
-
-          Padding(
-            padding: const EdgeInsets.all(8.0), // genera un espacio
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                // Usa el nombre de la parcela
-                Text(
-                  parcela.nombre,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 4),
-
-                //------------------row sirve para mostrar los iconos y el texto en la misma fila
-                //------------------por lo que al querer mostrar en dos filas debemos usar dos row
-                Row(
-                  //----------------------------diseño de la ubicacion
-                  children: <Widget>[
-                    const Icon(
-                      Icons.location_on,
-                      size: 12,
-                      color: Color.fromARGB(255, 255, 37, 37),
-                    ),
-                    const SizedBox(width: 2),
-                    Text(
-                      parcela.ubicacion,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ), // Usa la ubicación de la parcela
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 4,
-                ), //------------------------------------------------------- Espacio entre la ubicación y la extensión
-
-                Row(
-                  //-----------------------------diseño de la cantidad de arboles
-                  children: <Widget>[
-                    const Icon(Icons.forest, size: 14, color: Colors.green),
-                    const SizedBox(width: 2),
-                    Text(
-                      '${parcela.cantidadArboles} árboles',
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ), // Usa la cantidad de árboles
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // Ubicación del botón
-        ],
-      ),
-      //aqui se puede agregar un boton para ver mas detalles de la parcela o diseños bajos las cards
     );
   }
 }
