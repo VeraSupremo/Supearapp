@@ -26,11 +26,13 @@ Drawer obtenerMenuLateral(BuildContext context) {
           child: const DrawerHeader(
             // Encabezado del menú lateral
             // decoration:PictureLayer.network('https://live.staticflickr.com/65535/53752621454_c14ecc01ec_b'),
-            decoration: BoxDecoration(
+            decoration: BoxDecoration( 
               image: DecorationImage(
                 image: NetworkImage(
                   'https://www.reforestemos.org/content/uploads/bosque-nativo-araucaria-2.jpg',
+                  
                 ),
+                
                 fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
               ),
               color: Color.fromARGB(255, 190, 238, 144),

@@ -144,7 +144,7 @@ class CreacionDeVentas extends State<MercadoPage> {
                   ),
                 ),
               ],
-              backgroundColor: Color.fromARGB(235, 248, 248, 248),
+             // backgroundColor: Color.fromARGB(235, 248, 248, 248),
             ),
           );
         },

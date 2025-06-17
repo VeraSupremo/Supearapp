@@ -17,6 +17,13 @@ class ParcelaCard extends StatelessWidget {
 
   final Venta venta;
 
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(

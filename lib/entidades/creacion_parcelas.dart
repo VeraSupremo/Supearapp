@@ -4,11 +4,11 @@ import 'package:flutter_application_1/Screen/produccion.dart'; // Asegúrate de 
 import 'parcela.dart';
 import '/Screen/profile.dart';
 import '/Screen/mercado.dart';
+import 'menu_lateral.dart';
 
 class CreacionDeParcelas extends State<ProduccionesPage> {
   int selectedIndex = 0;
-  
-  
+
   final List<Parcela> _parcelas = [
     Parcela(
       nombre: "Canto del Angel",
@@ -65,6 +65,7 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
   Widget build(BuildContext context) {
     //esta es la construccion del wirdget que mostrara las parcelistas
     return Scaffold(
+      drawer: obtenerMenuLateral(context), // Llama a la función para obtener el menú lateral
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -84,19 +85,21 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
             // Logo de la aplicación
           ],
         ), // Usa el título pasado al widget
-        backgroundColor: const Color.fromARGB(117, 20, 100, 23),      // Cambia el color de la AppBar
+        backgroundColor: const Color.fromARGB(
+          117,
+          20,
+          100,
+          23,
+        ), // Cambia el color de la AppBar
       ),
 
       //poner un texto en el appbar que diga "Producciones"
-      
-
-
-      
-
       body: Padding(
         // Padding para el espacio alrededor de la lista
-        padding: const EdgeInsets.all(16.0,), // Ajusta la tarjeta para que no se vea fea
-        
+        padding: const EdgeInsets.all(
+          16.0,
+        ), // Ajusta la tarjeta para que no se vea fea
+
         child: ListView.builder(
           itemCount:
               _parcelas.length, // Cuenta el número de parcelas en la lista

@@ -3,6 +3,7 @@ import 'profile.dart';
 import 'mercado.dart'; // Importa la página de Mercado.
 import '../entidades/creacion_parcelas.dart'; // Importa la clase de creación de parcelas
 import '../entidades/parcela.dart'; // Importa la base de clase Parcela
+import 'package:http/http.dart' as http; // Importa el paquete http para manejar solicitudes de red
 
 //----------------------------------------------------Cambiar el nombre de este para que sea algo como pearMenu
 // Cambiado el nombre de la clase para reflejar su propósito
@@ -15,16 +16,41 @@ class ProduccionesPage extends StatefulWidget {
   State<ProduccionesPage> createState() => CreacionDeParcelas();
 }
 
-
 // Esta clase representa una tarjeta que muestra la información de una parcela
 class ParcelaCard extends StatelessWidget {
   const ParcelaCard({super.key, required this.parcela});
 
+  //String enlaceverificado ='';
   final Parcela parcela;
+  //metodo que verificara si el enlace esta disponible
+
+  Future<ImageProvider> getNewImage() async {
+    String newUrl = parcela.imageUrl;
+    try {
+      final response = await http.get(Uri.parse(newUrl));
+      if (response.statusCode != 200)
+        {
+          newUrl = "";
+        }
+    } catch (e) {
+        newUrl = "";
+      
+    }
+
+    if (newUrl.isNotEmpty) {
+      return NetworkImage(newUrl);
+    } else {
+      return AssetImage("assets/pictures/IconoApp2.png");
+    }
+      //return AssetImage("assets/pictures/IconoApp2.png");
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
@@ -35,22 +61,55 @@ class ParcelaCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           //---------------------------Todo el Diseño de las cards -------------------
-          Container(
+          FutureBuilder<ImageProvider>(
+            future: getNewImage(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return Container(
+                  width: 100,
+                  height: 100,
+                  color:
+                      Colors
+                          .grey[200], // O un CircularProgressIndicator si prefieres
+                );
+              }
+
+              final imageProvider = snapshot.data!;
+
+              return Container(
+                height: 100,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            },
+          ),
+
+          /*Container(
             //--------------------------------------------diseño de la imagen
             height: 120,
             width: double.infinity, // Ocupa todo el ancho disponible
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(parcela.imageUrl),
+                image:getNewImage(),
                 fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
               ),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(10.0),
               ), //Bordes redondeados en la parte superior
-              color: const Color.fromARGB(248,212,179,255,), // Color de fondo en caso de que la imagen no cargue
+              color: const Color.fromARGB(
+                248,
+                212,
+                179,
+                255,
+              ), // Color de fondo en caso de que la imagen no cargue
             ),
           ),
-
+          */
           const Divider(
             height: 2,
             color: Color.fromARGB(255, 36, 116, 29),
