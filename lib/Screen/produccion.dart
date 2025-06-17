@@ -16,6 +16,107 @@ class ProduccionesPage extends StatefulWidget {
 }
 
 
+// Esta clase representa una tarjeta que muestra la información de una parcela
+class ParcelaCard extends StatelessWidget {
+  const ParcelaCard({super.key, required this.parcela});
+
+  final Parcela parcela;
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          //---------------------------Todo el Diseño de las cards -------------------
+          Container(
+            //--------------------------------------------diseño de la imagen
+            height: 120,
+            width: double.infinity, // Ocupa todo el ancho disponible
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(parcela.imageUrl),
+                fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
+              ),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(10.0),
+              ), //Bordes redondeados en la parte superior
+              color: const Color.fromARGB(248,212,179,255,), // Color de fondo en caso de que la imagen no cargue
+            ),
+          ),
+
+          const Divider(
+            height: 2,
+            color: Color.fromARGB(255, 36, 116, 29),
+          ), // Línea divisoria entre la imagen y el contenido
+
+          Padding(
+            padding: const EdgeInsets.all(8.0), // genera un espacio
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // Usa el nombre de la parcela
+                Text(
+                  parcela.nombre,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 4),
+
+                //------------------row sirve para mostrar los iconos y el texto en la misma fila
+                //------------------por lo que al querer mostrar en dos filas debemos usar dos row
+                Row(
+                  //----------------------------diseño de la ubicacion
+                  children: <Widget>[
+                    const Icon(
+                      Icons.location_on,
+                      size: 12,
+                      color: Color.fromARGB(255, 255, 37, 37),
+                    ),
+                    const SizedBox(width: 2),
+                    Text(
+                      parcela.ubicacion,
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ), // Usa la ubicación de la parcela
+                  ],
+                ),
+
+                const SizedBox(
+                  height: 4,
+                ), //------------------------------------------------------- Espacio entre la ubicación y la extensión
+
+                Row(
+                  //-----------------------------diseño de la cantidad de arboles
+                  children: <Widget>[
+                    const Icon(Icons.forest, size: 14, color: Colors.green),
+                    const SizedBox(width: 2),
+                    Text(
+                      '${parcela.cantidadArboles} árboles',
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ), // Usa la cantidad de árboles
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Ubicación del botón
+        ],
+      ),
+      //aqui se puede agregar un boton para ver mas detalles de la parcela o diseños bajos las cards
+    );
+  }
+}
+
 /*class Parcela {
   final String nombre;
   final String ubicacion;
@@ -372,103 +473,3 @@ class ProduccionesPage extends StatefulWidget {
     );
   }
 }*/
-
-// Esta clase representa una tarjeta que muestra la información de una parcela
-class ParcelaCard extends StatelessWidget {
-  const ParcelaCard({super.key, required this.parcela});
-
-  final Parcela parcela;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          //---------------------------Todo el Diseño de las cards -------------------
-          Container(
-            //--------------------------------------------diseño de la imagen
-            height: 120,
-            width: double.infinity, // Ocupa todo el ancho disponible
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(parcela.imageUrl),
-                fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
-              ),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(10.0),
-              ), //Bordes redondeados en la parte superior
-              color: const Color.fromARGB(248,212,179,255,), // Color de fondo en caso de que la imagen no cargue
-            ),
-          ),
-
-          const Divider(
-            height: 2,
-            color: Color.fromARGB(255, 36, 116, 29),
-          ), // Línea divisoria entre la imagen y el contenido
-
-          Padding(
-            padding: const EdgeInsets.all(8.0), // genera un espacio
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                // Usa el nombre de la parcela
-                Text(
-                  parcela.nombre,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 4),
-
-                //------------------row sirve para mostrar los iconos y el texto en la misma fila
-                //------------------por lo que al querer mostrar en dos filas debemos usar dos row
-                Row(
-                  //----------------------------diseño de la ubicacion
-                  children: <Widget>[
-                    const Icon(
-                      Icons.location_on,
-                      size: 12,
-                      color: Color.fromARGB(255, 255, 37, 37),
-                    ),
-                    const SizedBox(width: 2),
-                    Text(
-                      parcela.ubicacion,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ), // Usa la ubicación de la parcela
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 4,
-                ), //------------------------------------------------------- Espacio entre la ubicación y la extensión
-
-                Row(
-                  //-----------------------------diseño de la cantidad de arboles
-                  children: <Widget>[
-                    const Icon(Icons.forest, size: 14, color: Colors.green),
-                    const SizedBox(width: 2),
-                    Text(
-                      '${parcela.cantidadArboles} árboles',
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ), // Usa la cantidad de árboles
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // Ubicación del botón
-        ],
-      ),
-      //aqui se puede agregar un boton para ver mas detalles de la parcela o diseños bajos las cards
-    );
-  }
-}

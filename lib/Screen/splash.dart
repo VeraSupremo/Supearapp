@@ -18,7 +18,7 @@ class _SplashPref extends State<SplashPref> {
     // Agregar el pasar a otra pantalla 
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context)=> const ProduccionesPage(title: "Terrenos"),
+        MaterialPageRoute(builder: (context)=> const ProduccionesPage(title: "SUPEARAPP",),
          ),
      );
    });
