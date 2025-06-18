@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_application_1/entidades/creacionVentas.dart';
 import '/entidades/venta.dart';
 import '../entidades/creacionVentas.dart';
+import 'package:http/http.dart' as http;
 
 class MercadoPage extends StatefulWidget {
   const MercadoPage({super.key, required this.title});
@@ -16,7 +17,26 @@ class ParcelaCard extends StatelessWidget {
   const ParcelaCard({required this.venta});
 
   final Venta venta;
+  Future<ImageProvider> getNewImage() async {
+    String newUrl = venta.imageUrl;
+    try {
+      final response = await http.get(Uri.parse(newUrl));
+      if (response.statusCode != 200)
+        {
+          newUrl = "";
+        }
+    } catch (e) {
+        newUrl = "";
+      
+    }
 
+    if (newUrl.isNotEmpty) {
+      return NetworkImage(newUrl);
+    } else {
+      return AssetImage("assets/pictures/IconoApp2.png");
+    }
+      //return AssetImage("assets/pictures/IconoApp2.png");
+  }
 
 
 
@@ -35,7 +55,34 @@ class ParcelaCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
+          FutureBuilder<ImageProvider>(
+            future: getNewImage(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return Container(
+                  width: 100,
+                  height: 100,
+                  color:
+                      Colors
+                          .grey[200], // O un CircularProgressIndicator si prefieres
+                );
+              }
+
+              final imageProvider = snapshot.data!;
+
+              return Container(
+                height: 100,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            },
+          ),
+          /*Container(
             height: 120,
             width: double.infinity,
             decoration: BoxDecoration(
@@ -48,7 +95,7 @@ class ParcelaCard extends StatelessWidget {
               ),
               color: const Color.fromARGB(248, 212, 179, 255),
             ),
-          ),
+          ),*/
           const Divider(height: 2, color: Color.fromARGB(255, 36, 116, 29)),
           Padding(
             padding: const EdgeInsets.all(8.0),
