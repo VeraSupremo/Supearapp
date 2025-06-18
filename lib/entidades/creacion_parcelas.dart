@@ -180,7 +180,7 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
                       ),
                     ),
                   ],
-                  backgroundColor: Color.fromARGB(235, 248, 248, 248),
+                 // backgroundColor: Color.fromARGB(235, 248, 248, 248),
                 ),
           );
         },

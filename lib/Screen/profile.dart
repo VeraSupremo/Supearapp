@@ -154,8 +154,19 @@ class ProfilePageState extends State<ProfilePage> {
                           ],
                         ),
                   );
+
                 },
               ),
+              ElevatedButton( child: const Text('Guardar'),
+                onPressed: () {
+                  setState(() {
+                    username = usernameController.text;
+                    // Aqui puedes agregar la logica para guardar los cambios
+                    // Por ejemplo, enviar los datos a un servidor o guardarlos localmente
+                  });
+                  Navigator.pop(context); // Cierra el diálogo
+                }
+                )
             ],
           ),
     );
@@ -163,16 +174,20 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    super.initState();
-    usernameController.text =
-        username; // Inicializa el controlador con el nombre de usuario actual
+    void dispose() {
+    usernameController.dispose();
+    super.dispose();
   }
 
   //Aqui ira el build de la card que se mostrara para editar al usuario
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+     return ProfileView(  //cambiar por vistaprofile y arreglar las variables
+      title: widget.title,
+      profileImage: profileImage,
+      username: username,
+      onEditProfilePressed: () => editProfile(context),
+    );
   }
 }
 
