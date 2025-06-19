@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'profile.dart';
-import 'mercado.dart'; // Importa la página de Mercado.
+//import 'profile.dart';
+//import 'mercado.dart'; // Importa la página de Mercado.
 import '../entidades/creacion_parcelas.dart'; // Importa la clase de creación de parcelas
 import '../entidades/parcela.dart'; // Importa la base de clase Parcela
 import 'package:http/http.dart' as http; // Importa el paquete http para manejar solicitudes de red

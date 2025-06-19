@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screen/produccion.dart' as prod;
 import 'package:flutter_application_1/Screen/produccion.dart'; // Asegúrate de importar donde se define ProduccionesPage
+import 'package:flutter_application_1/Screen/profile.dart';
+import 'package:flutter_application_1/entidades/persistent.dart';
 import 'parcela.dart';
-import '/Screen/profile.dart';
-import '/Screen/mercado.dart';
+//import '/Screen/profile.dart';
+//import '/Screen/mercado.dart';
 import 'menu_lateral.dart';
 
 class CreacionDeParcelas extends State<ProduccionesPage> {
@@ -85,16 +87,11 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
             // Logo de la aplicación
           ],
         ), // Usa el título pasado al widget
-        backgroundColor: const Color.fromARGB(
-          117,
-          20,
-          100,
-          23,
-        ), // Cambia el color de la AppBar
+        backgroundColor: const Color.fromARGB(117,20,100,23,), // Cambia el color de la AppBar
       ),
 
       //poner un texto en el appbar que diga "Producciones"
-      body: Padding(
+      /*body: Padding(
         // Padding para el espacio alrededor de la lista
         padding: const EdgeInsets.all(
           16.0,
@@ -137,7 +134,60 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
             );
           },
         ),
-      ),
+      ),*/
+      // se creara un padding para poder mostrar las parcelas del usuario si el indice es 1
+
+      body: selectedIndex == 1 
+          ?buildUserPublications() // Aquí se muestra la lista de publicaciones del usuario
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView.builder(
+                itemCount: _parcelas.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Detalles de ${_parcelas[index].nombre}'),
+                          content: Text(
+                            'Ubicación: ${_parcelas[index].ubicacion}\n'
+                            'Propietario: ${_parcelas[index].propietario}\n'
+                            'Extensión: ${_parcelas[index].extencionParcela} ha\n'
+                            'Producción anual: ${_parcelas[index].produccionAnual} toneladas',
+                          ),
+                          actions: [
+                          /*   IconButton(onPressed: (){
+                              // Aquí puedes agregar la lógica para editar la parcela
+                              // Por ejemplo, navegar a una pantalla de edición
+                             */
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('Cerrar'),
+                            ),
+
+                          ],
+                        ),
+                      );
+                    },
+                    child: prod.ParcelaCard(
+                      parcela: _parcelas[index],
+                    ),
+                  );
+                },
+              ),
+            ),
+
+
+
+
+
+
+
+
+
+
+
       //agregar un boton flotante para agregar una nueva parcela
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -192,9 +242,10 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       //----------------------------------------------------------------------------------aqui ira la buttonactionbar
-      bottomNavigationBar: BottomNavigationBar(
+      /*bottomNavigationBar: BottomNavigationBar( // Barra de navegación inferior
+        type: BottomNavigationBarType.fixed, // Tipo de barra de navegación
         currentIndex: selectedIndex,
-        onTap: (value) {
+        onTap: (value) { // Cambia el índice seleccionado al tocar un elemento
           setState(() {
             selectedIndex = value;
           });
@@ -212,11 +263,38 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
             ),
             label: "Editar Publicaciones",
             backgroundColor: const Color.fromARGB(255, 95, 170, 88),
-          ),
-          BottomNavigationBarItem(
+          ),*/
+
+
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: selectedIndex,
+            onTap: (value) {
+              if (value == 1 && UserPreferences.getUserType() == UserType.comprador) { // Índice del botón "Tus Publicaciones"
+                final userType = UserPreferences.getUserType();
+                if (userType == UserType.comprador) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Acceso denegado'),
+                      content: Text('No puedes acceder a esta función, solo eres un comprador.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                  return;
+                }
+              }
+              setState(() => selectedIndex = value);
+            },
+            items: [
+          BottomNavigationBarItem( // Primer elemento de la barra de navegación
             icon: const Icon(
               Icons.person_3,
-              color: Color.fromARGB(255, 1, 85, 241),
+              color: Color.fromARGB(255, 1, 85, 241), // Color del icono inactivo
             ),
             activeIcon: const Icon(
               Icons.person_3_outlined,
@@ -241,4 +319,65 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
       ),
     );
   }
+  //Metodo para mostrar las publicaciones del usuario
+    Widget buildUserPublications() {
+    final userType = UserPreferences.getUserType();
+    if (userType == UserType.productorVendedor || userType == UserType.soloProductor) {
+      return ListView.builder(
+        itemCount: _parcelas.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              title: Text(_parcelas[index].nombre),
+              subtitle: Text('Árboles: ${_parcelas[index].cantidadArboles}'),
+              // ... más detalles de la parcela
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Detalles de ${_parcelas[index].nombre}'),
+                    content: Text(
+                      'Ubicación: ${_parcelas[index].ubicacion}\n'
+                      'Propietario: ${_parcelas[index].propietario}\n'
+                      'Extensión: ${_parcelas[index].extencionParcela} ha\n'
+                      'Producción anual: ${_parcelas[index].produccionAnual} toneladas',
+                    ),
+                    actions: [
+                      IconButton(onPressed: (){
+                        // Aquí puedes agregar la lógica para editar la parcela
+                        // Por ejemplo, navegar a una pantalla de edición
+                        /*Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EditarParcelaPage(parcela: _parcelas[index]),
+                          ),
+                        );*/
+                      }, icon: Icon(Icons.edit_outlined, color: Colors.blue)),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Cerrar'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      );
+    } else {
+      return Center(
+        //child: Text('No tienes permisos para ver esta sección'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.block, size: 50, color: Colors.red),
+            SizedBox(height: 20),
+            Text('No tienes permisos para ver esta sección',
+              style: TextStyle(fontSize: 18)),
+          ],
+        ),
+      ); 
+    }
+  }
+
 }

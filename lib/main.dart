@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/entidades/persistent.dart';
 //import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'Screen/produccion.dart';
+//import 'Screen/produccion.dart';
 import 'Screen/splash.dart';
 import 'themes/util.dart';
 import 'themes/theme.dart';
+import 'entidades/persistent.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Necesario para async en main()
+  await UserPreferences.init(); // ¡Carga los datos del pueblo!
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

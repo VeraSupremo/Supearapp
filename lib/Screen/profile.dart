@@ -3,6 +3,7 @@ import 'dart:io'; // Importa para manejar archivos
 import 'package:flutter/services.dart'; // Importa para manejar el portapapeles
 import 'package:flutter/widgets.dart'; // Importa para usar widgets básicos
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_application_1/entidades/persistent.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key, required this.title});
@@ -13,15 +14,43 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => ProfilePageState();
 }
 
+// Enum definition
+enum UserType {
+  productorVendedor,
+  soloProductor,
+  comprador;
+
+  String get displayName {
+    switch (this) {
+      case UserType.productorVendedor:
+        return 'Productor Vendedor';
+      case UserType.soloProductor:
+        return 'Solo Productor';
+      case UserType.comprador:
+        return 'Comprador';
+    }
+  }
+}
+
 class ProfilePageState extends State<ProfilePage> {
   //aca ira la logica de la card que se mostrara para editar al usuario
 
   File? profileImage;
   //final String title;
-  String username = 'Nombre de Usuario';
-  String userType = 'Productor y Vendedor';
+  late String username; // Nombre de usuario por defecto
+  late UserType userType = UserType.comprador; // Tipo de usuario por defecto
   final TextEditingController usernameController = TextEditingController();
   //funcion para seleccionar una imagen del perfil
+
+  @override
+  void initState() {
+    super.initState();
+    // Cargar el tipo de usuario guardado al iniciar
+    userType = UserPreferences.getUserType();
+    username = UserPreferences.getUsername();
+    usernameController.text = username;
+  }
+
   Future<void> pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
@@ -85,7 +114,7 @@ class ProfilePageState extends State<ProfilePage> {
                               ? FileImage(
                                 profileImage!,
                               ) // Si hay una imagen seleccionada, la muestra
-                              : const AssetImage('assets/pictures/p1.jpg')
+                              : AssetImage('assets/pictures/p1.jpg')
                                   as ImageProvider, // Imagen por defecto
                     ),
                   ),
@@ -96,34 +125,38 @@ class ProfilePageState extends State<ProfilePage> {
                   ), // Espacio entre el avatar y el campo de texto
                   TextField(
                     controller: usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Nombre de Usuario',
+                    decoration: InputDecoration(
+                        labelText: username, // Muestra el nombre de usuario actual
+                      hintText: 'Nombre de Usuario',
                       border: OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 12),
                   const Text('Tipo de Usuario:'),
-                  DropdownButton<String>(
-                    // Dropdown para seleccionar el tipo de usuario
+
+                  DropdownButton<UserType>(
                     isExpanded: true,
                     value: userType,
                     items:
-                        [
-                          'Productor Vendedor',
-                          'Solo Productor',
-                          'Comprador',
-                        ].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
+                        UserType.values.map((UserType type) {
+                          // Mapea los valores del enum UserType a DropdownMenuItem
+                          // Muestra el nombre de usuario en el Dropdown
+                          return DropdownMenuItem<UserType>(
+                            value: type,
+                            child: Text(type.displayName),
                           );
-                        }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        userType = newValue!;
-                      });
+                        }).toList(), // Convierte la lista de UserType a una lista de DropdownMenuItem
+                    onChanged: (UserType? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          userType =
+                              newValue; // Actualiza el tipo de usuario seleccionado
+                        });
+                      }
                     },
                   ),
+                  const SizedBox(height: 12),
+                  // Puedes agregar más campos de edición aquí si es necesario
                 ],
               ),
             ),
@@ -154,35 +187,48 @@ class ProfilePageState extends State<ProfilePage> {
                           ],
                         ),
                   );
-
                 },
               ),
-              ElevatedButton( child: const Text('Guardar'),
-                onPressed: () {
+              ElevatedButton(
+                child: const Text('Guardar'),
+                onPressed: () async{
                   setState(() {
-                    username = usernameController.text;
+                    final selectedType = UserType.values.firstWhere( // Busca el tipo de usuario seleccionado
+                      // Compara el displayName del UserType con el texto del controlador
+                    (type) => type.displayName == usernameController.text,
+                    orElse: () => UserType.comprador,
+                  ); // selectedType is a UserType
+                    //username = UserType.; // Actualiza el tipo de usuario
+                    UserPreferences.saveUsername(usernameController.text); // Guardar nombre
+                    setState(() => username = usernameController.text); // Actualiza el nombre de usuario
+                    
                     // Aqui puedes agregar la logica para guardar los cambios
                     // Por ejemplo, enviar los datos a un servidor o guardarlos localmente
+                    UserPreferences.saveUserType(userType);
                   });
                   Navigator.pop(context); // Cierra el diálogo
-                }
-                )
+                },
+              ),
             ],
           ),
+      barrierDismissible:
+          false, // Evita que se cierre al tocar fuera del diálogo
     );
   }
 
-  @override
+  /*@override
   void initState() {
     void dispose() {
-    usernameController.dispose();
-    super.dispose();
-  }
+      usernameController.dispose(); // Libera los recursos del controlador
+      super.dispose(); // Llama al método dispose del padre
+    }
+  }*/
 
   //Aqui ira el build de la card que se mostrara para editar al usuario
   @override
   Widget build(BuildContext context) {
-     return ProfileView(  //cambiar por vistaprofile y arreglar las variables
+    return Vistaprofile(
+      //cambiar por vistaprofile y arreglar las variables
       title: widget.title,
       profileImage: profileImage,
       username: username,
@@ -190,12 +236,6 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-
-
-
-
-
 
 class Vistaprofile extends StatelessWidget {
   final String title;
@@ -246,8 +286,8 @@ class Vistaprofile extends StatelessWidget {
                     // Columna para el nombre y los árboles
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
-                        'Nombre de Usuario', // Reemplaza con el nombre del usuario
+                      Text(
+                        '$username', // Reemplaza con el nombre del usuario
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,

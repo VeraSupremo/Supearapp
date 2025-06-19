@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screen/profile.dart';
 import 'package:flutter_application_1/Screen/mercado.dart';
-import 'package:flutter_application_1/Screen/produccion.dart';
+//import 'package:flutter_application_1/Screen/produccion.dart';
+import 'package:flutter_application_1/entidades/persistent.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 Drawer obtenerMenuLateral(BuildContext context) {
+  String username = UserPreferences.getUsername();
   return Drawer(
     //añadir a listview al drawer. Esto asegura que el usuario pueda desplazarse
     //a través de las opciones en el cajón si no hay suficiente espacio vertical
@@ -19,45 +22,54 @@ Drawer obtenerMenuLateral(BuildContext context) {
             left: 0,
             right: 0,
             top: 22,
-            bottom: 22,
+            bottom: 32,
           ),
 
-          //padding: const EdgeInsets.all(4.2),
-          child: const DrawerHeader(
-            // Encabezado del menú lateral
-            // decoration:PictureLayer.network('https://live.staticflickr.com/65535/53752621454_c14ecc01ec_b'),
-            decoration: BoxDecoration( 
+          
+          child: DrawerHeader(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(
-                  'https://www.reforestemos.org/content/uploads/bosque-nativo-araucaria-2.jpg',
-                  
-                ),
-                
-                fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
+                image: NetworkImage('https://www.reforestemos.org/content/uploads/bosque-nativo-araucaria-2.jpg'),
+                fit: BoxFit.cover,
               ),
-              color: Color.fromARGB(255, 190, 238, 144),
-              // borderRadius: BorderRadius.circular(10), // Bordes redondeados
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage('assets/pictures/p1.jpg'),
-                ),
-                SizedBox(height: 5), // Espacio entre el avatar y el texto
+                CircleAvatar(radius: 50, backgroundImage: AssetImage('assets/pictures/p1.jpg')),
+                SizedBox(height: 2),
+                //Text(data: username, style: TextStyle(fontSize: 10, color: Colors.white70)),
 
-                Text(
-                  'Nombre de Usuario',
+                // Nombre de usuario con ajuste automático
+                
+
+                AutoSizeText(
+                  //si se demora en cargar el nombre de usuario, se mostrará un texto
+                  username == null || username.isEmpty
+                      ? 'Cargando nombre...'
+                      :
+                  username,
                   style: TextStyle(
-                    fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 255, 255, 255),
+                    color: Colors.white,
+                  ),
+                  maxLines: 1, // Máximo de líneas que se mostrarán
+                  minFontSize: 10, // Tamaño mínimo al que puede reducir
+                  overflow: TextOverflow.ellipsis, // Muestra "..." si no cabe
+                ),
+                SizedBox(height: 1),
+                // Tipo de usuario
+                Text(
+                  UserPreferences.getUserType().displayName,
+                  style: TextStyle(
+                    fontSize: 6,
+                    color: Colors.white70,
                   ),
                 ),
+                 
               ],
             ),
-          ),
+          )
         ),
         /*ListTile(
               title: const Text('Produccion de los fundos'),
