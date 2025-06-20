@@ -6,11 +6,20 @@ import 'Screen/splash.dart';
 import 'themes/util.dart';
 import 'themes/theme.dart';
 import 'entidades/persistent.dart';
+import 'entidades/profile_notifier.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Necesario para async en main()
   await UserPreferences.init(); // ¡Carga los datos del pueblo!
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProfileNotifier()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

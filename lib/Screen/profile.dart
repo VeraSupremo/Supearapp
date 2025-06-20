@@ -4,6 +4,10 @@ import 'package:flutter/services.dart'; // Importa para manejar el portapapeles
 import 'package:flutter/widgets.dart'; // Importa para usar widgets básicos
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_application_1/entidades/persistent.dart';
+import 'package:flutter_application_1/entidades/profile_notifier.dart';
+import 'package:provider/provider.dart';
+
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key, required this.title});
@@ -49,16 +53,47 @@ class ProfilePageState extends State<ProfilePage> {
     userType = UserPreferences.getUserType();
     username = UserPreferences.getUsername();
     usernameController.text = username;
+    _loadProfileImage();
   }
 
-  Future<void> pickImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-    if (pickedFile != null) {
+  
+  Future<void> _loadProfileImage() async {
+    final image = UserPreferences.getProfileImage();
+    if (image != null && await image.exists()) {
       setState(() {
-        profileImage = File(pickedFile.path);
+        profileImage = image;
       });
     }
   }
+  Future<void> pickImage(ImageSource source) async {
+    try {
+      // 1. Selecciona la imagen (de galería o cámara)
+      final pickedFile = await ImagePicker().pickImage(
+        source: source,
+        imageQuality: source == ImageSource.camera ? 50 : 70,
+        maxWidth: 800,
+        maxHeight: 800,
+      );
+      
+      if (pickedFile != null) {
+        // 2. Guarda la imagen en un archivo y persiste la ruta
+        final imageFile = File(pickedFile.path);
+        await UserPreferences.saveProfileImage(imageFile.path);
+        
+        // 3. Actualiza el estado con la nueva imagen
+        setState(() {
+          profileImage = imageFile;
+        });
+      }
+    } on PlatformException catch (e) {
+         if (mounted) {
+           ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(content: Text("Error al seleccionar imagen: ${e.message}")),
+           );
+         }
+      }
+  }
+
 
   //funcion de las cards 0w0
   void editProfile(BuildContext context) {
@@ -107,7 +142,7 @@ class ProfilePageState extends State<ProfilePage> {
                             ),
                       );
                     },
-                    child: CircleAvatar(
+                    /*child: CircleAvatar(
                       radius: 50,
                       backgroundImage:
                           profileImage != null
@@ -116,6 +151,12 @@ class ProfilePageState extends State<ProfilePage> {
                               ) // Si hay una imagen seleccionada, la muestra
                               : AssetImage('assets/pictures/p1.jpg')
                                   as ImageProvider, // Imagen por defecto
+                    ),*/
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: profileImage != null
+                          ? FileImage(profileImage!) 
+                          : const AssetImage('assets/pictures/p1.jpg') as ImageProvider,
                     ),
                   ),
 
@@ -192,20 +233,31 @@ class ProfilePageState extends State<ProfilePage> {
               ElevatedButton(
                 child: const Text('Guardar'),
                 onPressed: () async{
-                  setState(() {
+                  if (profileImage != null) {
+                      await UserPreferences.saveProfileImage(profileImage!.path);
+                    }
                     final selectedType = UserType.values.firstWhere( // Busca el tipo de usuario seleccionado
-                      // Compara el displayName del UserType con el texto del controlador
-                    (type) => type.displayName == usernameController.text,
+                    (type) => type.displayName == usernameController.text, // Compara el displayName del UserType con el texto del controlador
                     orElse: () => UserType.comprador,
-                  ); // selectedType is a UserType
-                    //username = UserType.; // Actualiza el tipo de usuario
+                  );
+                  setState(() {
+                      // Actualiza el tipo de usuario
+                    //userType = selectedType; // Actualiza el tipo de usuario
                     UserPreferences.saveUsername(usernameController.text); // Guardar nombre
                     setState(() => username = usernameController.text); // Actualiza el nombre de usuario
                     
-                    // Aqui puedes agregar la logica para guardar los cambios
+                    // puedes aca agregar la logica para guardar los cambios
                     // Por ejemplo, enviar los datos a un servidor o guardarlos localmente
                     UserPreferences.saveUserType(userType);
+                    Provider.of<ProfileNotifier>(context, listen: false).refreshProfile();
                   });
+                  // Muestra un mensaje de éxito
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Perfil actualizado con éxito'),
+                    ),
+                  );
+                  
                   Navigator.pop(context); // Cierra el diálogo
                 },
               ),
@@ -253,6 +305,7 @@ class Vistaprofile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final profileImage = UserPreferences.getProfileImage();
     return Scaffold(
       appBar: AppBar(
         //barra superior
@@ -274,10 +327,11 @@ class Vistaprofile extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 //----------------------------Fila para el avatar y el nombre
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 40,
-                  backgroundImage: AssetImage('assets/pictures/p1.jpg'),
-                  // Reemplaza con la URL de la imagen
+                  backgroundImage: profileImage != null
+                      ? FileImage(profileImage)
+                      : const AssetImage('assets/pictures/p1.jpg') as ImageProvider,
                 ),
                 const SizedBox(width: 16), // Espacio entre el avatar y el texto
                 //--------------------------- Expanded permite que el texto ocupe el espacio restante

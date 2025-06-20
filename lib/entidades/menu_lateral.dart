@@ -4,9 +4,13 @@ import 'package:flutter_application_1/Screen/mercado.dart';
 //import 'package:flutter_application_1/Screen/produccion.dart';
 import 'package:flutter_application_1/entidades/persistent.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_application_1/entidades/profile_notifier.dart';
+import 'package:provider/provider.dart';
 
 Drawer obtenerMenuLateral(BuildContext context) {
+  final profileNotifier = Provider.of<ProfileNotifier>(context, listen: true); 
   String username = UserPreferences.getUsername();
+  final profileImage = UserPreferences.getProfileImage();
   return Drawer(
     //añadir a listview al drawer. Esto asegura que el usuario pueda desplazarse
     //a través de las opciones en el cajón si no hay suficiente espacio vertical
@@ -25,30 +29,36 @@ Drawer obtenerMenuLateral(BuildContext context) {
             bottom: 32,
           ),
 
-          
           child: DrawerHeader(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage('https://www.reforestemos.org/content/uploads/bosque-nativo-araucaria-2.jpg'),
+                image: NetworkImage(
+                  'https://www.reforestemos.org/content/uploads/bosque-nativo-araucaria-2.jpg',
+                ),
                 fit: BoxFit.cover,
               ),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(radius: 50, backgroundImage: AssetImage('assets/pictures/p1.jpg')),
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage:
+                      profileImage != null
+                          ? FileImage(profileImage)
+                          : const AssetImage('assets/pictures/p1.jpg')
+                              as ImageProvider,
+                ),
                 SizedBox(height: 2),
+
                 //Text(data: username, style: TextStyle(fontSize: 10, color: Colors.white70)),
 
                 // Nombre de usuario con ajuste automático
-                
-
                 AutoSizeText(
                   //si se demora en cargar el nombre de usuario, se mostrará un texto
                   username == null || username.isEmpty
                       ? 'Cargando nombre...'
-                      :
-                  username,
+                      : username,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -61,15 +71,11 @@ Drawer obtenerMenuLateral(BuildContext context) {
                 // Tipo de usuario
                 Text(
                   UserPreferences.getUserType().displayName,
-                  style: TextStyle(
-                    fontSize: 6,
-                    color: Colors.white70,
-                  ),
+                  style: TextStyle(fontSize: 6, color: Colors.white70),
                 ),
-                 
               ],
             ),
-          )
+          ),
         ),
         /*ListTile(
               title: const Text('Produccion de los fundos'),

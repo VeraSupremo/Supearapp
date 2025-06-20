@@ -1,9 +1,141 @@
 import 'package:flutter/material.dart';
 import '../Screen/mercado.dart';
 import 'venta.dart';
+import 'persistent.dart';
+import '../Screen/profile.dart';
 
 class CreacionDeVentas extends State<MercadoPage> {
   int selectedIndex = 0;
+  late String nombreUsuario;
+
+  @override
+  void initState() {
+    super.initState();
+    nombreUsuario = UserPreferences.getUsername();
+  }
+
+  // funcion para añadir nueva publicacion
+  void addNewPublication() {
+    // Aquí puedes implementar la lógica para añadir una nueva publicación
+    // Por ejemplo, abrir un formulario para ingresar los detalles de la venta
+    final nuevaPublicacion = Venta(
+      nombre: "Nueva Publicación",
+      ubicacion: "Ubicación",
+      propietario: nombreUsuario,
+      cantidadArboles: 0,
+      produccionAnual: 0,
+      produccionDisponible: 0,
+      precio: 0.0,
+      imageUrl: 'https://farmbrokers.cl/wp-content/uploads/2024/02/Foto-4.jpeg',
+    );
+
+    setState(() {
+      _venta.add(nuevaPublicacion);
+    });
+  }
+
+  //funcion que mostrara la interfaz de agregar publicaciones
+  void showAddPublicationDialog(BuildContext context, String currentUsername) {
+    final nombreController = TextEditingController();
+    final ubicacionController = TextEditingController();
+    final propietarioController = TextEditingController();
+    final cantidadArbolesController = TextEditingController();
+    final produccionAnualController = TextEditingController();
+    final produccionDisponibleController = TextEditingController();
+    final precioController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Agregar Nueva Publicación'),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextField(
+                    controller: nombreController,
+                    decoration: const InputDecoration(labelText: 'Nombre'),
+                  ),
+                  TextField(
+                    controller: ubicacionController,
+                    decoration: const InputDecoration(labelText: 'Ubicación'),
+                  ),
+                  TextField(
+                    controller: propietarioController,
+                    decoration: const InputDecoration(labelText: 'Propietario'),
+                  ),
+                  TextField(
+                    controller: cantidadArbolesController,
+                    decoration: const InputDecoration(
+                      labelText: 'Cantidad de Árboles',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextField(
+                    controller: produccionAnualController,
+                    decoration: const InputDecoration(
+                      labelText: 'Producción Anual (Ton)',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextField(
+                    controller: produccionDisponibleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Producción Disponible (Ton)',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextField(
+                    controller: precioController,
+                    decoration: const InputDecoration(
+                      labelText: 'Precio por bin en CLP',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  if (nombreController.text.isEmpty ||
+                      ubicacionController.text.isEmpty ||
+                      produccionDisponibleController.text.isEmpty ||
+                      precioController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Todos los campos son requeridos'),
+                      ),
+                    );
+                    return;
+                  }
+
+                  final nuevaVenta = Venta(
+                    userId: currentUsername,
+                    nombre: nombreController.text,
+                    ubicacion: ubicacionController.text,
+                    propietario: currentUsername,
+                    cantidadArboles:
+                        int.tryParse(cantidadArbolesController.text) ?? 0,
+                    produccionAnual:
+                        (double.tryParse(produccionAnualController.text) ?? 0.0).toInt(),
+                    produccionDisponible:
+                        (double.tryParse(produccionDisponibleController.text) ?? 0.0).toInt(),
+                    precio: double.tryParse(precioController.text) ?? 0.0,
+                    imageUrl: 'https://farmbrokers.cl/wp-content/uploads/2024/02/Foto-4.jpeg',
+                  );
+
+                  setState(() {
+                    _venta.add(nuevaVenta);
+                  });
+                  Navigator.pop(context);
+                },
+                child: const Text('Guardar'),
+              ),
+            ],
+          ),
+    );
+  }
 
   final List<Venta> _venta = [
     Venta(
@@ -24,7 +156,8 @@ class CreacionDeVentas extends State<MercadoPage> {
       produccionAnual: 144,
       produccionDisponible: 42,
       precio: 12000.000,
-      imageUrl: 'https://www.turismodeobservacion.com/media/fotografias/campo-ganadero-en-la-region-de-la-araucania-chile-72384-xl.jpg',
+      imageUrl:
+          'https://www.turismodeobservacion.com/media/fotografias/campo-ganadero-en-la-region-de-la-araucania-chile-72384-xl.jpg',
     ),
     Venta(
       nombre: "Las liebres",
@@ -34,7 +167,8 @@ class CreacionDeVentas extends State<MercadoPage> {
       produccionAnual: 440,
       produccionDisponible: 3,
       precio: 857.000,
-      imageUrl: 'https://andinoblob.blob.core.windows.net/media/filer_public_thumbnails/filer_public/b3/bd/b3bda1aa-bbc9-47e0-8990-ff72cf1c613f/valparaiso.jpg__1440x760_q85_subsampling-2.jpg',
+      imageUrl:
+          'https://andinoblob.blob.core.windows.net/media/filer_public_thumbnails/filer_public/b3/bd/b3bda1aa-bbc9-47e0-8990-ff72cf1c613f/valparaiso.jpg__1440x760_q85_subsampling-2.jpg',
     ),
     Venta(
       nombre: "Ex Fundo el Peral",
@@ -44,7 +178,8 @@ class CreacionDeVentas extends State<MercadoPage> {
       produccionAnual: 20,
       produccionDisponible: 0,
       precio: 0,
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYgdQ1IXazX-c70Zwxe9Z5WC43_pdNrui1Rg&s',
+      imageUrl:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYgdQ1IXazX-c70Zwxe9Z5WC43_pdNrui1Rg&s',
     ),
     Venta(
       nombre: "Microlote A",
@@ -54,7 +189,8 @@ class CreacionDeVentas extends State<MercadoPage> {
       produccionAnual: 20,
       produccionDisponible: 1,
       precio: 285.000,
-      imageUrl: 'https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/cl/29/77/30/18/29773018_c17d9c',
+      imageUrl:
+          'https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/cl/29/77/30/18/29773018_c17d9c',
     ),
     Venta(
       nombre: "Microlote b",
@@ -68,12 +204,13 @@ class CreacionDeVentas extends State<MercadoPage> {
     ),
   ];
 
+ /* List<Venta> get _userPublications {
+    return _venta.where((venta) => venta.usuarioId == currentUsername).toList();
+  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
@@ -83,25 +220,24 @@ class CreacionDeVentas extends State<MercadoPage> {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Detalles de ${_venta[index].nombre}'),
-                    content: Text(
-                      'Ubicación: ${_venta[index].ubicacion}\n'
-                      'Propietario: ${_venta[index].propietario}\n'
-                      'Precio: \$${_venta[index].precio}',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Cerrar'),
+                  builder:
+                      (context) => AlertDialog(
+                        title: Text('Detalles de ${_venta[index].nombre}'),
+                        content: Text(
+                          'Ubicación: ${_venta[index].ubicacion}\n'
+                          'Propietario: ${_venta[index].propietario}\n'
+                          'Precio: \$${_venta[index].precio}',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('Cerrar'),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
                 );
               },
-              child: ParcelaCard(
-                venta: _venta[index],
-              ),
+              child: ParcelaCard(venta: _venta[index]),
             );
           },
         ),
@@ -110,42 +246,43 @@ class CreacionDeVentas extends State<MercadoPage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-              title: Text(
-                "¿Desea Vender un producto?",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-              content: Text(
-                "Recuerda cotizar los valores del producto en tu zona o unirte a un centro de acopio, una vez publicada no podras editar ciertos aspectos como su ubicacion, se precavido",
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "Si",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
+            builder:
+                (context) => AlertDialog(
+                  title: Text(
+                    "¿Desea Vender un producto?",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "No",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  content: Text(
+                    "Recuerda cotizar los valores del producto en tu zona o unirte a un centro de acopio, una vez publicada no podras editar ciertos aspectos como su ubicacion, se precavido",
                   ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "Si",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "No",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                  // backgroundColor: Color.fromARGB(235, 248, 248, 248),
                 ),
-              ],
-             // backgroundColor: Color.fromARGB(235, 248, 248, 248),
-            ),
           );
         },
         backgroundColor: const Color.fromARGB(255, 36, 116, 29),
@@ -155,31 +292,167 @@ class CreacionDeVentas extends State<MercadoPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: (value) {
-          setState(() {
-            selectedIndex = value;
-          });
+          if (value == 1) {
+            // Índice del botón "Tus Publicaciones"
+            final userType = UserPreferences.getUserType();
+            if (userType != UserType.productorVendedor) {
+              showDialog(
+                context: context,
+                builder:
+                    (context) => AlertDialog(
+                      title: Text('Acceso restringido'),
+                      content: Text(
+                        'Solo los productores vendedores pueden acceder a esta sección',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+              );
+              return;
+            }
+          }
+          setState(() => selectedIndex = value);
         },
         items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.edit, color: Color.fromARGB(255, 243, 239, 7)),
-            activeIcon: const Icon(Icons.edit_note, color: Color.fromARGB(255, 36, 116, 29), size: 30),
+            icon: const Icon(
+              Icons.edit,
+              color: Color.fromARGB(255, 243, 239, 7),
+            ),
+            activeIcon: const Icon(
+              Icons.edit_note,
+              color: Color.fromARGB(255, 36, 116, 29),
+              size: 30,
+            ),
             label: "Tus Publicaciones",
             backgroundColor: const Color.fromARGB(255, 95, 170, 88),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.store, color: Color.fromARGB(255, 190, 0, 0), size: 30),
-            activeIcon: const Icon(Icons.storefront, color: Color.fromARGB(255, 36, 116, 29), size: 30),
+            icon: const Icon(
+              Icons.store,
+              color: Color.fromARGB(255, 190, 0, 0),
+              size: 30,
+            ),
+            activeIcon: const Icon(
+              Icons.storefront,
+              color: Color.fromARGB(255, 36, 116, 29),
+              size: 30,
+            ),
             label: "Centro de ventas",
             backgroundColor: const Color.fromARGB(255, 190, 0, 0),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.group, color: Color.fromARGB(255, 111, 0, 255)),
-            activeIcon: const Icon(Icons.group_outlined, color: Color.fromARGB(255, 201, 166, 233), size: 30),
+            icon: const Icon(
+              Icons.group,
+              color: Color.fromARGB(255, 111, 0, 255),
+            ),
+            activeIcon: const Icon(
+              Icons.group_outlined,
+              color: Color.fromARGB(255, 201, 166, 233),
+              size: 30,
+            ),
             label: "Centro de Acopio",
             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildPublicacionesUser() {
+    return ListView.builder(
+      itemCount: _venta.length,
+      itemBuilder: (context, index) {
+        return Card(
+          margin: EdgeInsets.all(8),
+          child: ListTile(
+            leading: Image.network(
+              _venta[index].imageUrl,
+              width: 50,
+              height: 50,
+            ),
+            title: Text(_venta[index].nombre),
+            subtitle: Text(
+              '${_venta[index].produccionDisponible} Ton disponibles',
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () => editPublication(context, _venta[index]),
+                ),
+                Switch(
+                  value: _venta[index].produccionDisponible > 0,
+                  onChanged: (value) {
+                    setState(() {
+                      _venta[index].produccionDisponible = value ? 1 : 0;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void editPublication(BuildContext context, Venta venta) {
+    final cantidadProduccionController = TextEditingController(
+      text: venta.produccionDisponible.toString(),
+    );
+    final precioController = TextEditingController(
+      text: venta.precio.toString(),
+    );
+    // Aquí puedes implementar la lógica para editar la publicación
+    // Por ejemplo, abrir un formulario para editar los detalles de la venta
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text('Editar Publicación'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: cantidadProduccionController,
+                  decoration: InputDecoration(
+                    labelText: 'Toneladas disponibles',
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                TextField(
+                  controller: precioController,
+                  decoration: InputDecoration(labelText: 'Precio por tonelada'),
+                  keyboardType: TextInputType.number,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    double cantidad = double.parse(
+                      cantidadProduccionController.text,
+                    );
+                    venta.produccionDisponible = cantidad.toInt();
+                    venta.precio = double.parse(precioController.text);
+                  });
+                  Navigator.pop(context);
+                },
+                child: Text('Guardar'),
+              ),
+            ],
+          ),
     );
   }
 }

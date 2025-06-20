@@ -1,6 +1,7 @@
 //aca solo ira el codigo inicial de la clase venta
 
 class Venta {
+  final String? userId;
   final String nombre;
   final String ubicacion;
   final String propietario;
@@ -11,6 +12,7 @@ class Venta {
   final String imageUrl;
 
   Venta({
+    this.userId,
     required this.nombre,
     required this.ubicacion,
     required this.propietario,

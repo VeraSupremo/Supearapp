@@ -293,24 +293,26 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
             items: [
           BottomNavigationBarItem( // Primer elemento de la barra de navegación
             icon: const Icon(
-              Icons.person_3,
-              color: Color.fromARGB(255, 1, 85, 241), // Color del icono inactivo
+              Icons.home_outlined,              
+              color: Color.fromARGB(255, 214, 161, 13),
+
             ),
             activeIcon: const Icon(
-              Icons.person_3_outlined,
-              color: Color.fromARGB(255, 36, 116, 29),
+              Icons.home,
+              color: Color.fromARGB(255, 8, 145, 42), // Color del icono inactivo
+
             ),
             label: "Tus Publicaciones",
             backgroundColor: const Color.fromARGB(255, 190, 0, 0),
           ),
           BottomNavigationBarItem(
             icon: const Icon(
-              Icons.delete_rounded,
-              color: Color.fromARGB(255, 61, 61, 61),
+              Icons.person_3,
+              color: Color.fromARGB(255, 1, 85, 241), // Color del icono inactivo
             ),
             activeIcon: const Icon(
-              Icons.delete_forever,
-              color: Color.fromARGB(255, 158, 3, 3),
+              Icons.person_3_outlined,
+              color: Color.fromARGB(255, 36, 116, 29),
             ),
             label: "Borrar",
             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
