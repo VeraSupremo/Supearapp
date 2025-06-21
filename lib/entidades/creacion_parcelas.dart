@@ -302,7 +302,7 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
               color: Color.fromARGB(255, 8, 145, 42), // Color del icono inactivo
 
             ),
-            label: "Tus Publicaciones",
+            label: "Inicio",
             backgroundColor: const Color.fromARGB(255, 190, 0, 0),
           ),
           BottomNavigationBarItem(
@@ -314,7 +314,7 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
               Icons.person_3_outlined,
               color: Color.fromARGB(255, 36, 116, 29),
             ),
-            label: "Borrar",
+            label: "Tus publicaciones",
             backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           ),
         ],

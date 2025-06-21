@@ -3,11 +3,19 @@ import '../Screen/mercado.dart';
 import 'venta.dart';
 import 'persistent.dart';
 import '../Screen/profile.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class CreacionDeVentas extends State<MercadoPage> {
   int selectedIndex = 0;
   late String nombreUsuario;
-
+  
+  List<Venta> get _userPublications {
+    return _venta.where((venta) {
+     // Verifica que tanto usuarioId como currentUsername no sean nulos
+      return venta.userId != null && venta.userId == nombreUsuario;
+    }).toList();
+  }
   @override
   void initState() {
     super.initState();
@@ -52,7 +60,7 @@ class CreacionDeVentas extends State<MercadoPage> {
             content: SingleChildScrollView(
               child: Column(
                 children: [
-                  TextField(
+                  TextField( // Campo para el nombre de la parcela
                     controller: nombreController,
                     decoration: const InputDecoration(labelText: 'Nombre'),
                   ),
@@ -98,13 +106,10 @@ class CreacionDeVentas extends State<MercadoPage> {
             actions: [
               TextButton(
                 onPressed: () {
-                  if (nombreController.text.isEmpty ||
-                      ubicacionController.text.isEmpty ||
-                      produccionDisponibleController.text.isEmpty ||
-                      precioController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                  if (nombreController.text.isEmpty || ubicacionController.text.isEmpty || produccionDisponibleController.text.isEmpty || precioController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar( // Muestra un mensaje de error si los campos están vacíos
                       const SnackBar(
-                        content: Text('Todos los campos son requeridos'),
+                        content: Text('Completa todos los campos requeridos'),
                       ),
                     );
                     return;
@@ -204,14 +209,12 @@ class CreacionDeVentas extends State<MercadoPage> {
     ),
   ];
 
- /* List<Venta> get _userPublications {
-    return _venta.where((venta) => venta.usuarioId == currentUsername).toList();
-  }*/
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
-      body: Padding(
+      /*body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
           itemCount: _venta.length,
@@ -241,8 +244,33 @@ class CreacionDeVentas extends State<MercadoPage> {
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
+      ),*/
+      body: selectedIndex == 1  // Tus Publicaciones
+        ? ListView.builder( // Cambia a ListView.builder para mostrar las publicaciones del usuario
+            padding: const EdgeInsets.all(16.0), // Añade padding para que se vea mejor
+            itemCount: _userPublications.length, // Muestra solo las publicaciones del usuario actual
+            itemBuilder: (context, index) {
+              final venta = _userPublications[index];
+              return GestureDetector(
+                onTap: () => _showDetailsDialog(context, venta, editable: true),
+                child: _buildEditableVentaCard(venta),
+              );
+            },
+          )
+        : ListView.builder( // Centro de ventas
+            padding: const EdgeInsets.all(16.0), // Añade padding para que se vea mejor
+            itemCount: _venta.length,
+            itemBuilder: (context, index) {
+              final venta = _venta[index];
+              return GestureDetector( // Cambia a GestureDetector para manejar el tap
+                onTap: () => _showDetailsDialog(context, venta),
+                child: ParcelaCard(venta: venta),
+              );
+            },
+          ),
+
+          
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
             context: context,
@@ -287,15 +315,23 @@ class CreacionDeVentas extends State<MercadoPage> {
         },
         backgroundColor: const Color.fromARGB(255, 36, 116, 29),
         child: const Icon(Icons.add, color: Color.fromARGB(255, 255, 253, 253)),
-      ),
+      ),*/
+      floatingActionButton: selectedIndex == 1
+    ? FloatingActionButton(
+        onPressed: () => showAddPublicationDialog(context, nombreUsuario),
+        backgroundColor: const Color.fromARGB(255, 36, 116, 29),
+        child: const Icon(Icons.add, color: Colors.white),
+        tooltip: 'Agregar nueva publicación', // Texto que aparece al mantener presionado
+      )
+    : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: (value) {
-          if (value == 1) {
+          if (value == 1 && UserPreferences.getUserType() != UserType.productorVendedor || UserPreferences.getUserType() != UserType.soloProductor ) {
             // Índice del botón "Tus Publicaciones"
             final userType = UserPreferences.getUserType();
-            if (userType != UserType.productorVendedor) {
+            if (userType != UserType.productorVendedor && userType != UserType.soloProductor) {
               showDialog(
                 context: context,
                 builder:
@@ -363,7 +399,15 @@ class CreacionDeVentas extends State<MercadoPage> {
     );
   }
 
-  Widget buildPublicacionesUser() {
+  Widget buildPublicacionesUser() { //el buil lo que hace es construir la interfaz de usuario
+    if (_userPublications.isEmpty) {
+      return Center(
+        child: Text(
+          'No tienes publicaciones',
+          style: TextStyle(fontSize: 20, color: Colors.grey),
+        ),
+      );
+    }
     return ListView.builder(
       itemCount: _venta.length,
       itemBuilder: (context, index) {
@@ -455,4 +499,70 @@ class CreacionDeVentas extends State<MercadoPage> {
           ),
     );
   }
+  // funcion para mostrar las publicaciones: 
+  void _showDetailsDialog(BuildContext context, Venta venta, {bool editable = false}){
+    showDialog(context: context, builder: (context) => AlertDialog(
+      title: Text('Detalles de ${venta.nombre}'),
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Ubicación: ${venta.ubicacion}'),
+            Text('Propietario: ${venta.propietario}'),
+            Text('Cantidad de Árboles: ${venta.cantidadArboles}'),
+            Text('Producción Anual: ${venta.produccionAnual} Ton'),
+            Text('Producción Disponible: ${venta.produccionDisponible} Ton'),
+            Text('Precio por tonelada: \$${venta.precio.toStringAsFixed(2)} CLP'),
+            SizedBox(height: 10),
+            Image.network(venta.imageUrl, fit: BoxFit.cover),
+
+          ],
+        )
+      ),
+      actions: [
+        if (editable)TextButton(onPressed: () {
+              Navigator.pop(context);
+              showAddPublicationDialog(context, venta.userId ?? '');
+            },
+            child: const Text('Editar'),
+          ),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cerrar'),
+        ),
+      ],
+    ),
+    );
+  }
+
+  //funcion para editar las publicaciones
+  Widget _buildEditableVentaCard(Venta venta) {
+    return Card(
+      margin: EdgeInsets.all(8),
+      child: ListTile(
+        leading: Image.network(venta.imageUrl, width: 50, height: 50),
+        title: Text(venta.nombre),
+        subtitle: Text('${venta.produccionDisponible} Ton - \$${venta.precio.toStringAsFixed(2)}'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton( //Boton para editar la publicacion
+              icon: Icon(Icons.edit, color: Colors.blue),
+              onPressed: () => editPublication(context, venta),
+            ),
+            Switch( // Switch para activar/desactivar la producción disponible
+              activeColor: Colors.green,
+              value: venta.produccionDisponible > 0,
+              onChanged: (value) {
+                setState(() {
+                  venta.produccionDisponible = value ? 1 : 0;
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
