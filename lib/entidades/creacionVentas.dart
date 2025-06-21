@@ -51,6 +51,32 @@ class CreacionDeVentas extends State<MercadoPage> {
     final produccionAnualController = TextEditingController();
     final produccionDisponibleController = TextEditingController();
     final precioController = TextEditingController();
+    File? selectedImage;
+
+    //funcion para seleccionar una imagen
+    Future<void> pickImage(ImageSource source) async {
+      try {
+        final pickedFile = await ImagePicker().pickImage(
+          source: source,
+          imageQuality: 70,
+          maxWidth: 800,
+          maxHeight: 800,
+        );
+        
+        if (pickedFile != null) {
+          setState(() {
+            selectedImage = File(pickedFile.path);
+          });
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error al seleccionar imagen: ${e.toString()}")),
+          );
+        }
+      }
+  }
+
 
     showDialog(
       context: context,
@@ -60,9 +86,61 @@ class CreacionDeVentas extends State<MercadoPage> {
             content: SingleChildScrollView(
               child: Column(
                 children: [
+                  // Widget para seleccionar imagen
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => SafeArea( // Muestra un modal para seleccionar la fuente de la imagen
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.photo_library),
+                                title: const Text('Galería'),
+                                onTap: () {
+                                  pickImage(ImageSource.gallery);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.camera_alt),
+                                title: const Text('Cámara'),
+                                onTap: () {
+                                  pickImage(ImageSource.camera);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: selectedImage != null
+                          ? Image.file(selectedImage!, fit: BoxFit.cover)
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add_photo_alternate, size: 50, color: Colors.grey),
+                                Text('Agregar imagen', style: TextStyle(color: Colors.grey)),
+                              ],
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   TextField( // Campo para el nombre de la parcela
                     controller: nombreController,
-                    decoration: const InputDecoration(labelText: 'Nombre'),
+                    decoration: const InputDecoration(labelText: 'Nombre Parcela'),
                   ),
                   TextField(
                     controller: ubicacionController,
@@ -70,7 +148,7 @@ class CreacionDeVentas extends State<MercadoPage> {
                   ),
                   TextField(
                     controller: propietarioController,
-                    decoration: const InputDecoration(labelText: 'Propietario'),
+                    decoration: const InputDecoration(labelText: 'Nombre Propietario'),
                   ),
                   TextField(
                     controller: cantidadArbolesController,
@@ -114,6 +192,9 @@ class CreacionDeVentas extends State<MercadoPage> {
                     );
                     return;
                   }
+                   String imageUrl = selectedImage != null 
+                    ? 'local_image_placeholder' // Puedes subir esta imagen a un servidor después
+                    : 'assets/pictures/p1.jpg';
 
                   final nuevaVenta = Venta(
                     userId: currentUsername,
@@ -565,4 +646,5 @@ class CreacionDeVentas extends State<MercadoPage> {
     );
   }
 
+  
 }
