@@ -18,25 +18,29 @@ class ParcelaCard extends StatelessWidget {
 
   final Venta venta;
   Future<ImageProvider> getNewImage() async {
-    String newUrl = venta.imageUrl;
-    try {
-      final response = await http.get(Uri.parse(newUrl));
-      if (response.statusCode != 200)
-        {
-          newUrl = "";
-        }
-    } catch (e) {
-        newUrl = "";
-      
-    }
-
-    if (newUrl.isNotEmpty) {
-      return NetworkImage(newUrl);
-    } else {
-      return AssetImage("assets/pictures/IconoApp2.png");
-    }
-      //return AssetImage("assets/pictures/IconoApp2.png");
+  // Si hay una imagen local, usarla
+  if (venta.imageFile != null && await venta.imageFile!.exists()) {
+    return FileImage(venta.imageFile!);
   }
+  
+  // Si es una imagen de assets
+  if (venta.imageUrl.startsWith('assets/')) {
+    return AssetImage(venta.imageUrl);
+  }
+
+  // Si es una URL de internet
+  try {
+    final response = await http.get(Uri.parse(venta.imageUrl));
+    if (response.statusCode == 200) {
+      return NetworkImage(venta.imageUrl);
+    }
+  } catch (e) {
+    // Si falla, usar imagen por defecto
+    debugPrint('Error cargando imagen de red: $e');
+  }
+  
+  return AssetImage("assets/pictures/IconoApp2.png");
+}
 
 
 
@@ -62,15 +66,32 @@ class ParcelaCard extends StatelessWidget {
                 return Container(
                   width: 100,
                   height: 100,
-                  color:
-                      Colors
-                          .grey[200], // O un CircularProgressIndicator si prefieres
+                  color:Colors.grey[200], 
+                  child: const Center(
+                    child: CircularProgressIndicator( // Indicador de carga
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>( // Color verde
+                        Color.fromARGB(255, 36, 116, 29),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              if(snapshot.hasError || snapshot.data == null){
+                return Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey[200],
+                  child: const Center(
+                    child: Icon(Icons.error, color: Colors.red), // Icono de error
+                  ),
                 );
               }
 
-              final imageProvider = snapshot.data!;
-
-              return Container(
+              final imageProvider = snapshot.data!; // Imagen obtenida de la función getNewImage
+              // Retornar el contenedor con la imagen
+              // Si la imagen es una URL, se mostrará una imagen de red
+              return Container( // Contenedor para la imagen
                 height: 100,
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -82,20 +103,7 @@ class ParcelaCard extends StatelessWidget {
               );
             },
           ),
-          /*Container(
-            height: 120,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(venta.imageUrl),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(10.0),
-              ),
-              color: const Color.fromARGB(248, 212, 179, 255),
-            ),
-          ),*/
+          // Divider para separar la imagen del contenido
           const Divider(height: 2, color: Color.fromARGB(255, 36, 116, 29)),
           Padding(
             padding: const EdgeInsets.all(8.0),

@@ -4,11 +4,13 @@ import 'venta.dart';
 import 'persistent.dart';
 import '../Screen/profile.dart';
 import 'package:image_picker/image_picker.dart';
+import 'database_helper.dart';
 import 'dart:io';
 
 class CreacionDeVentas extends State<MercadoPage> {
   int selectedIndex = 0;
   late String nombreUsuario;
+  final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
   
   List<Venta> get _userPublications {
     return _venta.where((venta) {
@@ -20,12 +22,14 @@ class CreacionDeVentas extends State<MercadoPage> {
   void initState() {
     super.initState();
     nombreUsuario = UserPreferences.getUsername();
+    _loadPublications();
   }
-
-  // funcion para añadir nueva publicacion
-  void addNewPublication() {
+  
+  /*void addNewPublication() {
     // Aquí puedes implementar la lógica para añadir una nueva publicación
     // Por ejemplo, abrir un formulario para ingresar los detalles de la venta
+    await _databaseHelper.insertPublication(nuevaVenta);
+    await _loadPublications();
     final nuevaPublicacion = Venta(
       nombre: "Nueva Publicación",
       ubicacion: "Ubicación",
@@ -40,7 +44,7 @@ class CreacionDeVentas extends State<MercadoPage> {
     setState(() {
       _venta.add(nuevaPublicacion);
     });
-  }
+  }*/
 
   //funcion que mostrara la interfaz de agregar publicaciones
   void showAddPublicationDialog(BuildContext context, String currentUsername) {
@@ -64,9 +68,9 @@ class CreacionDeVentas extends State<MercadoPage> {
         );
         
         if (pickedFile != null) {
-          setState(() {
-            selectedImage = File(pickedFile.path);
-          });
+          addNewPublication(nuevaVenta).then((_) {
+            Navigator.pop(context);
+       });
         }
       } catch (e) {
         if (mounted) {
@@ -201,15 +205,14 @@ class CreacionDeVentas extends State<MercadoPage> {
                     nombre: nombreController.text,
                     ubicacion: ubicacionController.text,
                     propietario: currentUsername,
-                    cantidadArboles:
-                        int.tryParse(cantidadArbolesController.text) ?? 0,
-                    produccionAnual:
-                        (double.tryParse(produccionAnualController.text) ?? 0.0).toInt(),
-                    produccionDisponible:
-                        (double.tryParse(produccionDisponibleController.text) ?? 0.0).toInt(),
+                    cantidadArboles: int.tryParse(cantidadArbolesController.text) ?? 0,
+                    produccionAnual: (double.tryParse(produccionAnualController.text) ?? 0.0).toInt(),
+                    produccionDisponible: (double.tryParse(produccionDisponibleController.text) ?? 0.0).toInt(),
                     precio: double.tryParse(precioController.text) ?? 0.0,
-                    imageUrl: 'https://farmbrokers.cl/wp-content/uploads/2024/02/Foto-4.jpeg',
+                    imageUrl: selectedImage != null ? '' : 'assets/pictures/p1.jpg', // URL vacía si es imagen local
+                    imageFile: selectedImage, // Guarda la imagen local
                   );
+                  
 
                   setState(() {
                     _venta.add(nuevaVenta);
@@ -217,6 +220,7 @@ class CreacionDeVentas extends State<MercadoPage> {
                   Navigator.pop(context);
                 },
                 child: const Text('Guardar'),
+                
               ),
             ],
           ),
@@ -295,37 +299,6 @@ class CreacionDeVentas extends State<MercadoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
-      /*body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-          itemCount: _venta.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder:
-                      (context) => AlertDialog(
-                        title: Text('Detalles de ${_venta[index].nombre}'),
-                        content: Text(
-                          'Ubicación: ${_venta[index].ubicacion}\n'
-                          'Propietario: ${_venta[index].propietario}\n'
-                          'Precio: \$${_venta[index].precio}',
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Cerrar'),
-                          ),
-                        ],
-                      ),
-                );
-              },
-              child: ParcelaCard(venta: _venta[index]),
-            );
-          },
-        ),
-      ),*/
       body: selectedIndex == 1  // Tus Publicaciones
         ? ListView.builder( // Cambia a ListView.builder para mostrar las publicaciones del usuario
             padding: const EdgeInsets.all(16.0), // Añade padding para que se vea mejor
@@ -350,53 +323,6 @@ class CreacionDeVentas extends State<MercadoPage> {
             },
           ),
 
-          
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder:
-                (context) => AlertDialog(
-                  title: Text(
-                    "¿Desea Vender un producto?",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  content: Text(
-                    "Recuerda cotizar los valores del producto en tu zona o unirte a un centro de acopio, una vez publicada no podras editar ciertos aspectos como su ubicacion, se precavido",
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "Si",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "No",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                  // backgroundColor: Color.fromARGB(235, 248, 248, 248),
-                ),
-          );
-        },
-        backgroundColor: const Color.fromARGB(255, 36, 116, 29),
-        child: const Icon(Icons.add, color: Color.fromARGB(255, 255, 253, 253)),
-      ),*/
       floatingActionButton: selectedIndex == 1
     ? FloatingActionButton(
         onPressed: () => showAddPublicationDialog(context, nombreUsuario),
@@ -435,20 +361,7 @@ class CreacionDeVentas extends State<MercadoPage> {
           setState(() => selectedIndex = value);
         },
         items: [
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.edit,
-              color: Color.fromARGB(255, 243, 239, 7),
-            ),
-            activeIcon: const Icon(
-              Icons.edit_note,
-              color: Color.fromARGB(255, 36, 116, 29),
-              size: 30,
-            ),
-            label: "Tus Publicaciones",
-            backgroundColor: const Color.fromARGB(255, 95, 170, 88),
-          ),
-          BottomNavigationBarItem(
+           BottomNavigationBarItem(
             icon: const Icon(
               Icons.store,
               color: Color.fromARGB(255, 190, 0, 0),
@@ -462,6 +375,20 @@ class CreacionDeVentas extends State<MercadoPage> {
             label: "Centro de ventas",
             backgroundColor: const Color.fromARGB(255, 190, 0, 0),
           ),
+          BottomNavigationBarItem(
+            icon: const Icon(
+              Icons.edit,
+              color: Color.fromARGB(255, 243, 239, 7),
+            ),
+            activeIcon: const Icon(
+              Icons.edit_note,
+              color: Color.fromARGB(255, 36, 116, 29),
+              size: 30,
+            ),
+            label: "Tus Publicaciones",
+            backgroundColor: const Color.fromARGB(255, 95, 170, 88),
+          ),
+         
           BottomNavigationBarItem(
             icon: const Icon(
               Icons.group,
@@ -595,7 +522,11 @@ class CreacionDeVentas extends State<MercadoPage> {
             Text('Producción Disponible: ${venta.produccionDisponible} Ton'),
             Text('Precio por tonelada: \$${venta.precio.toStringAsFixed(2)} CLP'),
             SizedBox(height: 10),
-            Image.network(venta.imageUrl, fit: BoxFit.cover),
+            venta.imageFile != null
+                ? Image.file(venta.imageFile!, fit: BoxFit.cover)
+                : venta.imageUrl.startsWith('assets/')
+                    ? Image.asset(venta.imageUrl, fit: BoxFit.cover)
+                    : Image.network(venta.imageUrl, fit: BoxFit.cover),
 
           ],
         )
@@ -621,7 +552,11 @@ class CreacionDeVentas extends State<MercadoPage> {
     return Card(
       margin: EdgeInsets.all(8),
       child: ListTile(
-        leading: Image.network(venta.imageUrl, width: 50, height: 50),
+        leading: venta.imageFile != null
+          ? Image.file(venta.imageFile!, width: 50, height: 50)
+          : venta.imageUrl.startsWith('assets/')
+              ? Image.asset(venta.imageUrl, width: 50, height: 50)
+              : Image.network(venta.imageUrl, width: 50, height: 50),
         title: Text(venta.nombre),
         subtitle: Text('${venta.produccionDisponible} Ton - \$${venta.precio.toStringAsFixed(2)}'),
         trailing: Row(
@@ -644,7 +579,73 @@ class CreacionDeVentas extends State<MercadoPage> {
         ),
       ),
     );
+  } 
+  Future<void> _loadPublications() async {
+    final publications = await _databaseHelper.getPublications();
+    setState(() {
+     _venta.clear(); // Limpia la lista antes de agregar nuevas publicaciones
+      _venta.addAll(publications);
+      _userPublications; // Actualiza las publicaciones del usuario
+    });
   }
+  // funcion para añadir nueva publicacion
+  Future<void> addNewPublication(Venta nuevaVenta) async {
+    await _databaseHelper.insertPublication(nuevaVenta);
+    await _loadPublications();
+  }
+  //funcion para mostrar las publicaciones
+  void showPublications(BuildContext context) {
+    final venta = _venta[0];
+    final nombreController = TextEditingController(text: venta.nombre);
+    final ubicacionController = TextEditingController(text: venta.ubicacion);
+    final cantidadArbolesController = TextEditingController(text: venta.cantidadArboles.toString());
+    final produccionAnualController = TextEditingController(text: venta.produccionAnual.toString());
+    final produccionDisponibleController = TextEditingController(text: venta.produccionDisponible.toString());
+    final precioController = TextEditingController(text: venta.precio.toString());
+    File? selectedImage = venta.imageFile; // Asigna la primera imagen de la lista de ventas como ejemplo
 
-  
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Tus Publicaciones'),
+        content: _userPublications.isEmpty
+            ? const Text('No tienes publicaciones')
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _userPublications.map((venta) {
+                    return ListTile(
+                      title: Text(venta.nombre),
+                      subtitle: Text('${venta.produccionDisponible} Ton - \$${venta.precio.toStringAsFixed(2)}'),
+                      onTap: () => _showDetailsDialog(context, venta, editable: true),
+                    );
+                  }).toList(),
+                ),
+              ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cerrar'),
+          ),
+          TextButton(onPressed: () async{
+            final updateVenta = Venta(
+              userId: UserPreferences.getUsername(),
+              nombre: nombreController.text,
+              ubicacion: ubicacionController.text,
+              propietario: UserPreferences.getUsername(),
+              cantidadArboles: int.tryParse(cantidadArbolesController.text) ?? 0,
+              produccionAnual: (double.tryParse(produccionAnualController.text) ?? 0.0).toInt(),
+              produccionDisponible: (double.tryParse(produccionDisponibleController.text) ?? 0.0).toInt(),
+              precio: double.tryParse(precioController.text) ?? 0.0,
+              imageUrl: selectedImage != null ? '' : 'assets/pictures/p1.jpg', // URL vacía si es imagen local
+              imageFile: selectedImage, // Guarda la imagen local
+            );
+            await _databaseHelper.updatePublication(updateVenta);
+            await _loadPublications();
+            Navigator.pop(context);
+          }, child: const Text('Guardar Cambios')),
+        ],
+      ),
+    );
+  } 
 }

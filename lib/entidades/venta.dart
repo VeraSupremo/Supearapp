@@ -1,4 +1,5 @@
 //aca solo ira el codigo inicial de la clase venta
+import 'dart:io';
 
 class Venta {
   final String? userId;
@@ -9,7 +10,9 @@ class Venta {
   int produccionAnual;
   int produccionDisponible;
   double precio;
-  final String imageUrl;
+  String imageUrl;
+  File? imageFile;
+  String? imagePath;
 
   Venta({
     this.userId,
@@ -21,9 +24,14 @@ class Venta {
     required this.produccionDisponible,
     required this.precio,
     required this.imageUrl,
+    this.imageFile,
+    this.imagePath,
   });
-}
+  //metodo para ver si hay publicaciones iguales
+  @override
+  bool operator ==(Object other) => // Sobrecarga del operador == para comparar dos publicaciones
+      identical(this, other) || other is Venta && runtimeType == other.runtimeType && nombre == other.nombre && propietario == other.propietario;
 
-// la clase parcela sera la base de los datos a mostrar en la app
-//podria agregar uno que se llame "Produccion" para mostrar la produccion de cada parcela
-//y otro que diga el nombre del dueño de la parcela
+  @override
+  int get hashCode => nombre.hashCode ^ propietario.hashCode; // Hash code para comparar publicaciones
+}

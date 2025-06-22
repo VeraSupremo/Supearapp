@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io'; // Importa para manejar archivos
 import 'package:flutter/services.dart'; // Importa para manejar el portapapeles
-import 'package:flutter/widgets.dart'; // Importa para usar widgets básicos
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_application_1/entidades/persistent.dart';
 import 'package:flutter_application_1/entidades/profile_notifier.dart';

@@ -242,30 +242,6 @@ class CreacionDeParcelas extends State<ProduccionesPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       //----------------------------------------------------------------------------------aqui ira la buttonactionbar
-      /*bottomNavigationBar: BottomNavigationBar( // Barra de navegación inferior
-        type: BottomNavigationBarType.fixed, // Tipo de barra de navegación
-        currentIndex: selectedIndex,
-        onTap: (value) { // Cambia el índice seleccionado al tocar un elemento
-          setState(() {
-            selectedIndex = value;
-          });
-        },
-
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.edit,
-              color: Color.fromARGB(255, 241, 177, 0),
-            ),
-            activeIcon: const Icon(
-              Icons.forest_rounded,
-              color: Color.fromARGB(255, 36, 116, 29),
-            ),
-            label: "Editar Publicaciones",
-            backgroundColor: const Color.fromARGB(255, 95, 170, 88),
-          ),*/
-
-
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,
             onTap: (value) {

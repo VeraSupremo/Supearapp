@@ -5,7 +5,6 @@ import 'package:flutter_application_1/entidades/persistent.dart';
 import 'Screen/splash.dart';
 import 'themes/util.dart';
 import 'themes/theme.dart';
-import 'entidades/persistent.dart';
 import 'entidades/profile_notifier.dart';
 import 'package:provider/provider.dart';
 
