@@ -11,6 +11,9 @@ class UserPreferences {
   static late UserType _userType;
   static late String _nombreUsuario;
   static String? _profileImagePath;
+  static late Color _backgroundColor;
+  static late double _fontSizeFactor;
+  static late bool _isProfileImageRound;
 
   static Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
@@ -24,6 +27,9 @@ class UserPreferences {
         : UserType.comprador;
     _nombreUsuario = prefs.getString('username') ?? 'Camarada Anónimo'; 
     _profileImagePath = prefs.getString('profileImagePath');
+    _backgroundColor = Color(prefs.getInt('backgroundColor') ?? 0xFFF5F5F5); // Color por defecto claro
+    _fontSizeFactor = prefs.getDouble('fontSizeFactor') ?? 1.0;
+    _isProfileImageRound = prefs.getBool('isProfileImageRound') ?? true;
   }
   //metodo para guardar los valores de las preferencias del usuario
   static Future<void> saveUserType(UserType type) async {
@@ -53,6 +59,25 @@ class UserPreferences {
     _nombreUsuario = 'Camarada Anónimo'; // Reiniciar el nombre de usuario por defecto
     _profileImagePath = null; // Limpiar la ruta de la imagen de perfil
   }
+  static Future<void> saveBackgroundColor(Color color) async {
+  final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('backgroundColor', color.value);
+    _backgroundColor = color;
+  }
+
+  static Future<void> saveFontSizeFactor(double factor) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('fontSizeFactor', factor);
+    _fontSizeFactor = factor;
+  }
+
+  static Future<void> saveProfileImageShape(bool isRound) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isProfileImageRound', isRound);
+    _isProfileImageRound = isRound;
+  }
+
+
   
 
   // Métodos para obtener los valores guardados
@@ -69,7 +94,17 @@ class UserPreferences {
     // Aquí puedes usar SharedPreferences o cualquier otra forma de almacenamiento
      return _profileImagePath != null ? File(_profileImagePath!) : null;
   }
+  static Color getBackgroundColor() {
+      return _backgroundColor;
+    }
 
+  static double getFontSizeFactor() {
+      return _fontSizeFactor;
+   }
+
+  static bool isProfileImageRound() {
+      return _isProfileImageRound;
+  }
 }
 class ImageStorageService { // Clase para manejar el almacenamiento de imágenes
   static Future<String> saveImageLocal(File image) async {

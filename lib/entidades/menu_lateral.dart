@@ -7,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_application_1/entidades/profile_notifier.dart';
 import 'package:provider/provider.dart';
 import 'database_helper.dart';
+import '../Screen/acerca.dart';
 
 Drawer obtenerMenuLateral(BuildContext context) {
   final profileNotifier = Provider.of<ProfileNotifier>(context, listen: true);
@@ -133,17 +134,13 @@ Drawer obtenerMenuLateral(BuildContext context) {
           leading: const Icon(Icons.message),
           title: const Text('Acerca de'),
           onTap: () {
-            /* Navigator.pop(context);
+            Navigator.pop(context);
             Navigator.push(
               context,
               MaterialPageRoute(
-                //builder: (context) => const MercadoPage(title: "Acerca de"),
-                //llamar a _loadPublications() si es necesario
+                builder: (context) => const AcercaDe(title: "Acerca de"),
               ),
             );
-            // Then close the drawer
-            //Navigator.pop(context);
-          },*/
           },
         ),
       ],

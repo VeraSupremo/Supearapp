@@ -5,8 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_application_1/entidades/persistent.dart';
 import 'package:flutter_application_1/entidades/profile_notifier.dart';
 import 'package:provider/provider.dart';
-
-
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key, required this.title});
@@ -55,7 +54,6 @@ class ProfilePageState extends State<ProfilePage> {
     _loadProfileImage();
   }
 
-  
   Future<void> _loadProfileImage() async {
     final image = UserPreferences.getProfileImage();
     if (image != null && await image.exists()) {
@@ -64,6 +62,7 @@ class ProfilePageState extends State<ProfilePage> {
       });
     }
   }
+
   Future<void> pickImage(ImageSource source) async {
     try {
       // 1. Selecciona la imagen (de galería o cámara)
@@ -73,26 +72,25 @@ class ProfilePageState extends State<ProfilePage> {
         maxWidth: 800,
         maxHeight: 800,
       );
-      
+
       if (pickedFile != null) {
         // 2. Guarda la imagen en un archivo y persiste la ruta
         final imageFile = File(pickedFile.path);
         await UserPreferences.saveProfileImage(imageFile.path);
-        
+
         // 3. Actualiza el estado con la nueva imagen
         setState(() {
           profileImage = imageFile;
         });
       }
     } on PlatformException catch (e) {
-         if (mounted) {
-           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text("Error al seleccionar imagen: ${e.message}")),
-           );
-         }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error al seleccionar imagen: ${e.message}")),
+        );
       }
+    }
   }
-
 
   //funcion de las cards 0w0
   void editProfile(BuildContext context) {
@@ -153,9 +151,11 @@ class ProfilePageState extends State<ProfilePage> {
                     ),*/
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: profileImage != null
-                          ? FileImage(profileImage!) 
-                          : const AssetImage('assets/pictures/p1.jpg') as ImageProvider,
+                      backgroundImage:
+                          profileImage != null
+                              ? FileImage(profileImage!)
+                              : const AssetImage('assets/pictures/p1.jpg')
+                                  as ImageProvider,
                     ),
                   ),
 
@@ -166,7 +166,8 @@ class ProfilePageState extends State<ProfilePage> {
                   TextField(
                     controller: usernameController,
                     decoration: InputDecoration(
-                        labelText: username, // Muestra el nombre de usuario actual
+                      labelText:
+                          username, // Muestra el nombre de usuario actual
                       hintText: 'Nombre de Usuario',
                       border: OutlineInputBorder(),
                     ),
@@ -231,24 +232,35 @@ class ProfilePageState extends State<ProfilePage> {
               ),
               ElevatedButton(
                 child: const Text('Guardar'),
-                onPressed: () async{
+                onPressed: () async {
                   if (profileImage != null) {
-                      await UserPreferences.saveProfileImage(profileImage!.path);
-                    }
-                    final selectedType = UserType.values.firstWhere( // Busca el tipo de usuario seleccionado
-                    (type) => type.displayName == usernameController.text, // Compara el displayName del UserType con el texto del controlador
+                    await UserPreferences.saveProfileImage(profileImage!.path);
+                  }
+                  final selectedType = UserType.values.firstWhere(
+                    // Busca el tipo de usuario seleccionado
+                    (type) =>
+                        type.displayName ==
+                        usernameController
+                            .text, // Compara el displayName del UserType con el texto del controlador
                     orElse: () => UserType.comprador,
                   );
                   setState(() {
-                      // Actualiza el tipo de usuario
+                    // Actualiza el tipo de usuario
                     //userType = selectedType; // Actualiza el tipo de usuario
-                    UserPreferences.saveUsername(usernameController.text); // Guardar nombre
-                    setState(() => username = usernameController.text); // Actualiza el nombre de usuario
-                    
+                    UserPreferences.saveUsername(
+                      usernameController.text,
+                    ); // Guardar nombre
+                    setState(
+                      () => username = usernameController.text,
+                    ); // Actualiza el nombre de usuario
+
                     // puedes aca agregar la logica para guardar los cambios
                     // Por ejemplo, enviar los datos a un servidor o guardarlos localmente
                     UserPreferences.saveUserType(userType);
-                    Provider.of<ProfileNotifier>(context, listen: false).refreshProfile();
+                    Provider.of<ProfileNotifier>(
+                      context,
+                      listen: false,
+                    ).refreshProfile();
                   });
                   // Muestra un mensaje de éxito
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -256,7 +268,7 @@ class ProfilePageState extends State<ProfilePage> {
                       content: Text('Perfil actualizado con éxito'),
                     ),
                   );
-                  
+
                   Navigator.pop(context); // Cierra el diálogo
                 },
               ),
@@ -302,21 +314,143 @@ class Vistaprofile extends StatelessWidget {
     required this.onEditProfilePressed,
   });
 
+  void _showAccountSettings(BuildContext context) {
+    // Aquí puedes implementar la lógica para mostrar la configuración de la cuenta
+    showDialog(
+      context: context,
+      builder: (context) {
+        Color currentColor = UserPreferences.getBackgroundColor();
+        double currentFontSizeFactor = UserPreferences.getFontSizeFactor();
+        bool isRound = UserPreferences.isProfileImageRound();
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Configuración de Cuenta'),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.color_lens),
+                      title: const Text('Color de fondo'),
+                      trailing: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: currentColor,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      onTap: () async {
+                        final Color? pickedColor = await showDialog<Color>(
+                          context: context,
+                          builder:
+                              (context) => AlertDialog(
+                                title: const Text('Selecciona un color'),
+                                content: SingleChildScrollView(
+                                  child: ColorPicker(
+                                    pickerColor: currentColor,
+                                    onColorChanged: (color) {
+                                      currentColor = color;
+                                    },
+                                    showLabel: true,
+                                    pickerAreaHeightPercent: 0.7,
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    child: const Text('Cancelar'),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                  TextButton(
+                                    child: const Text('Aceptar'),
+                                    onPressed:
+                                        () => Navigator.pop(
+                                          context,
+                                          currentColor,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                        );
+
+                        if (pickedColor != null) {
+                          setState(() => currentColor = pickedColor);
+                        }
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.format_size),
+                      title: const Text('Tamaño fuente'),
+                      subtitle: Slider(
+                        value: currentFontSizeFactor,
+                        min: 0.8,
+                        max: 1.5,
+                        divisions: 7,
+                        label: '${(currentFontSizeFactor * 100).round()}%',
+                        onChanged: (value) {
+                          setState(() => currentFontSizeFactor = value);
+                        },
+                      ),
+                    ),
+                    //switch para cambiar la foto de perfil redonda o cuadrada
+                    SwitchListTile(
+                      title: const Text('Foto de perfil redonda'),
+                      value: isRound,
+                      onChanged: (value) {
+                        setState(() {
+                          isRound = value;
+                          UserPreferences.saveProfileImageShape(value);
+                        });
+                      },
+                      secondary: const Icon(Icons.account_circle_outlined),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                ElevatedButton(
+                  child: const Text('Guardar'),
+                  onPressed: () async {
+                    await UserPreferences.saveBackgroundColor(currentColor);
+                    await UserPreferences.saveFontSizeFactor(
+                      currentFontSizeFactor,
+                    );
+                    await UserPreferences.saveProfileImageShape(isRound);
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Configuración guardada con éxito LOS DATOS TARDAN EN CARGAR'),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-     final profileImage = UserPreferences.getProfileImage();
+    final profileImage = UserPreferences.getProfileImage();
+    final isRound = UserPreferences.isProfileImageRound();
+    final backgroundColor = UserPreferences.getBackgroundColor();
+    final sizeFont = UserPreferences.getFontSizeFactor();
     return Scaffold(
       appBar: AppBar(
         //barra superior
-        // backgroundColor: Theme.of(context).colorScheme.inversePrimary, // Cambia el color de la AppBar
-        backgroundColor: const Color.fromARGB(
-          255,
-          20,
-          100,
-          22,
-        ), // Cambia el color de la AppBar
         title: Text(title),
-      ),
+        ),        
+        backgroundColor: backgroundColor,
+
+      
       body: Column(
         children: <Widget>[
           Padding(
@@ -325,12 +459,25 @@ class Vistaprofile extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: <Widget>[
+                isRound ?
                 //----------------------------Fila para el avatar y el nombre
                 CircleAvatar(
                   radius: 40,
-                  backgroundImage: profileImage != null
-                      ? FileImage(profileImage)
-                      : const AssetImage('assets/pictures/p1.jpg') as ImageProvider,
+                  backgroundImage:
+                      profileImage != null
+                          ? FileImage(profileImage)
+                          : const AssetImage('assets/pictures/p1.jpg')
+                              as ImageProvider,
+                ): ClipRRect(
+                  borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                  child: Image(
+                    image: profileImage!= null // Si hay una imagen de perfil, la muestra
+                        ? FileImage(profileImage)
+                        : const AssetImage('assets/pictures/p1.jpg') as ImageProvider, // Imagen de perfil
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover, // Ajusta la imagen al contenedor
+                  ),
                 ),
                 const SizedBox(width: 16), // Espacio entre el avatar y el texto
                 //--------------------------- Expanded permite que el texto ocupe el espacio restante
@@ -393,9 +540,7 @@ class Vistaprofile extends StatelessWidget {
                   leading: const Icon(Icons.key_outlined),
                   title: const Text('Configuración de Cuenta'),
                   // Puedes agregar un onTap para la acción
-                  onTap: () {
-                    // Acción al tocar
-                  },
+                  onTap: () => _showAccountSettings(context),
                 ),
                 ListTile(
                   leading: const Icon(Icons.person_outline),
