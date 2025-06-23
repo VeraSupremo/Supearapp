@@ -193,7 +193,7 @@ class CreacionDeVentas extends State<MercadoPage> {
                     return;
                   }
                    String imageUrl = selectedImage != null 
-                    ? 'local_image_placeholder' 
+                    ? 'local_image_placeholder' // Puedes subir esta imagen a un servidor después
                     : 'assets/pictures/p1.jpg';
 
                   final nuevaVenta = Venta(
@@ -201,17 +201,14 @@ class CreacionDeVentas extends State<MercadoPage> {
                     nombre: nombreController.text,
                     ubicacion: ubicacionController.text,
                     propietario: currentUsername,
-                    cantidadArboles:
-                        int.tryParse(cantidadArbolesController.text) ?? 0,
-                    produccionAnual:
-                        (double.tryParse(produccionAnualController.text) ?? 0.0).toInt(),
-                    produccionDisponible:
-                        (double.tryParse(produccionDisponibleController.text) ?? 0.0).toInt(),
+                    cantidadArboles: int.tryParse(cantidadArbolesController.text) ?? 0,
+                    produccionAnual: (double.tryParse(produccionAnualController.text) ?? 0.0).toInt(),
+                    produccionDisponible: (double.tryParse(produccionDisponibleController.text) ?? 0.0).toInt(),
                     precio: double.tryParse(precioController.text) ?? 0.0,
-                    //imageUrl: 'https://farmbrokers.cl/wp-content/uploads/2024/02/Foto-4.jpeg',
-                    imageUrl: selectedImage != null ? '' : 'assets/pictures/p1.jpg',
-                    imageFile: selectedImage,
+                    imageUrl: selectedImage != null ? '' : 'assets/pictures/p1.jpg', // URL vacía si es imagen local
+                    imageFile: selectedImage, // Guarda la imagen local
                   );
+                  
 
                   setState(() {
                     _venta.add(nuevaVenta);
@@ -219,6 +216,7 @@ class CreacionDeVentas extends State<MercadoPage> {
                   Navigator.pop(context);
                 },
                 child: const Text('Guardar'),
+                
               ),
             ],
           ),
@@ -297,7 +295,6 @@ class CreacionDeVentas extends State<MercadoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
-      
       body: selectedIndex == 1  // Tus Publicaciones
         ? ListView.builder( // Cambia a ListView.builder para mostrar las publicaciones del usuario
             padding: const EdgeInsets.all(16.0), // Añade padding para que se vea mejor
@@ -360,20 +357,7 @@ class CreacionDeVentas extends State<MercadoPage> {
           setState(() => selectedIndex = value);
         },
         items: [
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.edit,
-              color: Color.fromARGB(255, 243, 239, 7),
-            ),
-            activeIcon: const Icon(
-              Icons.edit_note,
-              color: Color.fromARGB(255, 36, 116, 29),
-              size: 30,
-            ),
-            label: "Tus Publicaciones",
-            backgroundColor: const Color.fromARGB(255, 95, 170, 88),
-          ),
-          BottomNavigationBarItem(
+           BottomNavigationBarItem(
             icon: const Icon(
               Icons.store,
               color: Color.fromARGB(255, 190, 0, 0),
@@ -387,6 +371,20 @@ class CreacionDeVentas extends State<MercadoPage> {
             label: "Centro de ventas",
             backgroundColor: const Color.fromARGB(255, 190, 0, 0),
           ),
+          BottomNavigationBarItem(
+            icon: const Icon(
+              Icons.edit,
+              color: Color.fromARGB(255, 243, 239, 7),
+            ),
+            activeIcon: const Icon(
+              Icons.edit_note,
+              color: Color.fromARGB(255, 36, 116, 29),
+              size: 30,
+            ),
+            label: "Tus Publicaciones",
+            backgroundColor: const Color.fromARGB(255, 95, 170, 88),
+          ),
+         
           BottomNavigationBarItem(
             icon: const Icon(
               Icons.group,
@@ -520,7 +518,11 @@ class CreacionDeVentas extends State<MercadoPage> {
             Text('Producción Disponible: ${venta.produccionDisponible} Ton'),
             Text('Precio por tonelada: \$${venta.precio.toStringAsFixed(2)} CLP'),
             SizedBox(height: 10),
-            Image.network(venta.imageUrl, fit: BoxFit.cover),
+            venta.imageFile != null
+                ? Image.file(venta.imageFile!, fit: BoxFit.cover)
+                : venta.imageUrl.startsWith('assets/')
+                    ? Image.asset(venta.imageUrl, fit: BoxFit.cover)
+                    : Image.network(venta.imageUrl, fit: BoxFit.cover),
 
           ],
         )
@@ -546,7 +548,11 @@ class CreacionDeVentas extends State<MercadoPage> {
     return Card(
       margin: EdgeInsets.all(8),
       child: ListTile(
-        leading: Image.network(venta.imageUrl, width: 50, height: 50),
+        leading: venta.imageFile != null
+          ? Image.file(venta.imageFile!, width: 50, height: 50)
+          : venta.imageUrl.startsWith('assets/')
+              ? Image.asset(venta.imageUrl, width: 50, height: 50)
+              : Image.network(venta.imageUrl, width: 50, height: 50),
         title: Text(venta.nombre),
         subtitle: Text('${venta.produccionDisponible} Ton - \$${venta.precio.toStringAsFixed(2)}'),
         trailing: Row(
@@ -569,7 +575,5 @@ class CreacionDeVentas extends State<MercadoPage> {
         ),
       ),
     );
-  }
-
-  
+  }  
 }
