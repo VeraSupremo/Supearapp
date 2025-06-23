@@ -12,18 +12,19 @@ class CreacionDeVentas extends State<MercadoPage> {
   late String nombreUsuario;
   final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
   
+
+  @override
+  void initState() {
+    _loadPublications();
+    super.initState();
+    nombreUsuario = UserPreferences.getUsername();
+    
+  }
   List<Venta> get _userPublications {
     return _venta.where((venta) {
       // Verifica que tanto usuarioId como currentUsername no sean nulos
       return venta.userId != null && venta.userId == nombreUsuario;
     }).toList();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    nombreUsuario = UserPreferences.getUsername();
-    _loadPublications();
   }
   
   List<Venta> _venta = [];
@@ -32,31 +33,12 @@ class CreacionDeVentas extends State<MercadoPage> {
   Future<void> _loadPublications() async {
     final publications = await _databaseHelper.getPublications();
     setState(() {
-      _venta.clear();
+     // _venta.clear();
       _venta.addAll(publications);
     });
   }
 
-  /*void addNewPublication() {
-    // Aquí puedes implementar la lógica para añadir una nueva publicación
-    // Por ejemplo, abrir un formulario para ingresar los detalles de la venta
-    await _databaseHelper.insertPublication(nuevaVenta);
-    await _loadPublications();
-    final nuevaPublicacion = Venta(
-      nombre: "Nueva Publicación",
-      ubicacion: "Ubicación",
-      propietario: nombreUsuario,
-      cantidadArboles: 0,
-      produccionAnual: 0,
-      produccionDisponible: 0,
-      precio: 0.0,
-      imageUrl: 'https://farmbrokers.cl/wp-content/uploads/2024/02/Foto-4.jpeg',
-    );
 
-    setState(() {
-      _venta.add(nuevaPublicacion);
-    });
-  }*/
 
   //funcion que mostrara la interfaz de agregar publicaciones
   void showAddPublicationDialog(BuildContext context, String currentUsername) {
@@ -246,6 +228,7 @@ class CreacionDeVentas extends State<MercadoPage> {
 
                   setState(() {
                     _venta.add(nuevaVenta);
+                    
                   });
                   Navigator.pop(context);
                 },
@@ -256,73 +239,6 @@ class CreacionDeVentas extends State<MercadoPage> {
     );
   }
 
-
-  /*final List<Venta> _venta = [
-    Venta(
-      nombre: "Canto del Angel",
-      ubicacion: "Marchigue",
-      propietario: "Juan Hecheverria",
-      cantidadArboles: 8500,
-      produccionAnual: 1700,
-      produccionDisponible: 200,
-      precio: 57142.857,
-      imageUrl: 'https://rastro.com/fotos3/2024/02/24/12150484_foto4.jpg',
-    ),
-    Venta(
-      nombre: "Los Qeules",
-      ubicacion: "Cauquenes",
-      propietario: "Manuel Martinez",
-      cantidadArboles: 720,
-      produccionAnual: 144,
-      produccionDisponible: 42,
-      precio: 12000.000,
-      imageUrl:
-          'https://www.turismodeobservacion.com/media/fotografias/campo-ganadero-en-la-region-de-la-araucania-chile-72384-xl.jpg',
-    ),
-    Venta(
-      nombre: "Las liebres",
-      ubicacion: "Valparaíso",
-      propietario: "Martin vasquez",
-      cantidadArboles: 2200,
-      produccionAnual: 440,
-      produccionDisponible: 3,
-      precio: 857.000,
-      imageUrl:
-          'https://andinoblob.blob.core.windows.net/media/filer_public_thumbnails/filer_public/b3/bd/b3bda1aa-bbc9-47e0-8990-ff72cf1c613f/valparaiso.jpg__1440x760_q85_subsampling-2.jpg',
-    ),
-    Venta(
-      nombre: "Ex Fundo el Peral",
-      ubicacion: "Parral",
-      propietario: "Sergio Masias",
-      cantidadArboles: 100,
-      produccionAnual: 20,
-      produccionDisponible: 0,
-      precio: 0,
-      imageUrl:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYgdQ1IXazX-c70Zwxe9Z5WC43_pdNrui1Rg&s',
-    ),
-    Venta(
-      nombre: "Microlote A",
-      ubicacion: "Molina",
-      propietario: "Gerardo jimenez",
-      cantidadArboles: 100,
-      produccionAnual: 20,
-      produccionDisponible: 1,
-      precio: 285.000,
-      imageUrl:
-          'https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/cl/29/77/30/18/29773018_c17d9c',
-    ),
-    Venta(
-      nombre: "Microlote b",
-      ubicacion: "Molina",
-      propietario: "Jostin Jimenez",
-      cantidadArboles: 100,
-      produccionAnual: 20,
-      produccionDisponible: 2,
-      precio: 571.000,
-      imageUrl: 'https://www.ciperchile.cl/wp-content/uploads/campo.jpg',
-    ),
-  ];*/
 
   @override
   Widget build(BuildContext context) {
@@ -653,16 +569,7 @@ class CreacionDeVentas extends State<MercadoPage> {
     );
   }
 
-  /*Future<void> _loadPublications() async {
-    final publications = await _databaseHelper.getPublications();
-    setState(() {
-      _venta.clear(); // Limpia la lista antes de agregar nuevas publicaciones
-      _venta.addAll(publications);
-
-      //_userPublications; // Actualiza las publicaciones del usuario
-    });
-  }*/
-
+  
   // funcion para añadir nueva publicacion
   Future<void> addNewPublication(Venta nuevaVenta) async {
     await _databaseHelper.insertPublication(nuevaVenta);
@@ -686,9 +593,7 @@ class CreacionDeVentas extends State<MercadoPage> {
     final precioController = TextEditingController(
       text: venta.precio.toString(),
     );
-    File? selectedImage =
-        venta
-            .imageFile; // Asigna la primera imagen de la lista de ventas como ejemplo
+    File? selectedImage = venta.imageFile; // Asigna la primera imagen de la lista de ventas como ejemplo
 
     showDialog(
       context: context,

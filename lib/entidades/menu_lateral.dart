@@ -6,9 +6,10 @@ import 'package:flutter_application_1/entidades/persistent.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_application_1/entidades/profile_notifier.dart';
 import 'package:provider/provider.dart';
+import 'database_helper.dart';
 
 Drawer obtenerMenuLateral(BuildContext context) {
-  final profileNotifier = Provider.of<ProfileNotifier>(context, listen: true); 
+  final profileNotifier = Provider.of<ProfileNotifier>(context, listen: true);
   String username = UserPreferences.getUsername();
   final profileImage = UserPreferences.getProfileImage();
   return Drawer(
@@ -121,10 +122,28 @@ Drawer obtenerMenuLateral(BuildContext context) {
               context,
               MaterialPageRoute(
                 builder: (context) => const MercadoPage(title: "Mercado"),
+                //llamar a _loadPublications() si es necesario
               ),
             );
             // Then close the drawer
             //Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.message),
+          title: const Text('Acerca de'),
+          onTap: () {
+            /* Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                //builder: (context) => const MercadoPage(title: "Acerca de"),
+                //llamar a _loadPublications() si es necesario
+              ),
+            );
+            // Then close the drawer
+            //Navigator.pop(context);
+          },*/
           },
         ),
       ],

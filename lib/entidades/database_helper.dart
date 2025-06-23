@@ -119,10 +119,10 @@ class DatabaseHelper { // Clase para manejar la base de datos
     Database db = await database;
     await db.close();
   }
-  Future<void> clearDatabase() async {
+ /* Future<void> clearDatabase() async {
     Database db = await database;
     await db.delete(table);
-  }
+  }*/
   Future<String> saveImageAndGetPath(File? imageFile) async { // Método para guardar una imagen y obtener su ruta
   if (imageFile == null || !await imageFile.exists()) return '';  
   final directory = await getApplicationDocumentsDirectory();
