@@ -9,8 +9,14 @@ partes en la pantalla de splash donde se vera el logo de la aplicacion para lueg
  * Perfil
  * Mercado
  * Plantaciones
+ * Acerca de Nosotros
 
  En plantaciones se encuentran las parcelas de los usuarios donde se podran ver la cantidad de arboles, la extencion, la ubicacion y la produccion estimada.
- En mercado se podra encontrar publicaciones tuyas o de otros usuarios donde se daran las opciones de formar centros de acopio que serian como grupos puestos por ubicacion para poder facilitar la venta y compra de productos.
+ En mercado se podra encontrar publicaciones tuyas las cuales podras crear siempre que seas comprador productor o productor,tambien veras publicaciones de otros usuarios donde se daran las opciones de formar centros de acopio que serian como grupos puestos por ubicacion para poder facilitar la venta y compra de productos.
  Dentro del apartado de Perfil encontrara una foto de usuario, la misma que en la barra laterar, sus cantidades de arboles y un boton para salir, tambien en la lista de abajo hallara opciones de ajustes, privacidad.
 
+ nombre del paquete: cl.thesupreme.supearapp
+
+ # Capturas de pantalla:
+ 
+ enlace del video: https://youtu.be/KTQwvnfhseE?si=16dGiQ3yWNksDQVx
