@@ -24,6 +24,7 @@ partes en la pantalla de splash donde se vera el logo de la aplicacion para lueg
  # Capturas de pantalla:
  
 enlace del video: https://youtu.be/KTQwvnfhseE?si=16dGiQ3yWNksDQVx
+enlace miro: https://miro.com/welcomeonboard/QzZ3aHNFeFRWRWRUT0x2cWNaSUdQZlgrN0VpRWJEMjVlaTRLYVg3YTUrdVpwaEFMVnhodWhRZkJoSSs0UjF6ajB5WW14V0taMlBvbkNOeTFmSnFyYlRERGpyREhFV2Y1d3RON1NOVVI4RlB1NFNuLzhjZXpjcUNSejlWWDNuWndnbHpza3F6REdEcmNpNEFOMmJXWXBBPT0hdjE=?share_link_id=139312983818
 
 ![Captura 1](assets/pictures/captura1.jpg)
 
