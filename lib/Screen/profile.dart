@@ -547,10 +547,8 @@ class Vistaprofile extends StatelessWidget {
                   title: const Text(
                     'Editar Perfil',
                   ), //                           AQUI SE LLAMA A LA CLASE DE ALLA ARRIBA QUE EDITA EL PERFIL
-                  // Puedes agregar un onTap para la acción
                   onTap: onEditProfilePressed,
                 ),
-                // Agrega más elementos de configuración aquí
                 ListTile(
                   leading: const Icon(Icons.privacy_tip_outlined),
                   title: const Text('Privacidad'),

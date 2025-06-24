@@ -88,28 +88,6 @@ class ParcelaCard extends StatelessWidget {
               );
             },
           ),
-
-          /*Container(
-            //--------------------------------------------diseño de la imagen
-            height: 120,
-            width: double.infinity, // Ocupa todo el ancho disponible
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image:getNewImage(),
-                fit: BoxFit.cover, // Ajusta la imagen para cubrir el contenedor
-              ),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(10.0),
-              ), //Bordes redondeados en la parte superior
-              color: const Color.fromARGB(
-                248,
-                212,
-                179,
-                255,
-              ), // Color de fondo en caso de que la imagen no cargue
-            ),
-          ),
-          */
           const Divider(
             height: 2,
             color: Color.fromARGB(255, 36, 116, 29),
