@@ -66,14 +66,14 @@ Drawer obtenerMenuLateral(BuildContext context) {
                     color: Colors.white,
                   ),
                   maxLines: 1, // Máximo de líneas que se mostrarán
-                  minFontSize: 10, // Tamaño mínimo al que puede reducir
+                  minFontSize: 6, // Tamaño mínimo al que puede reducir
                   overflow: TextOverflow.ellipsis, // Muestra "..." si no cabe
                 ),
                 SizedBox(height: 1),
                 // Tipo de usuario
                 Text(
                   UserPreferences.getUserType().displayName,
-                  style: TextStyle(fontSize: 6, color: Colors.white70),
+                  style: TextStyle(fontSize: 5, color: Colors.white70),
                 ),
               ],
             ),

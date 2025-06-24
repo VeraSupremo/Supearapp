@@ -72,7 +72,8 @@ flutter:
     - assets\pictures\p1.jpg
     - assets/pictures/IconoApp.png
     - assets/pictures/IconoApp2.png
-    - assets/pictures/userphoto.jpg
+    - assets/pictures/userphoto.png
+    - lib\entidades\cuestionario.json
 
   # To add assets to your application, add an assets section, like this:
   

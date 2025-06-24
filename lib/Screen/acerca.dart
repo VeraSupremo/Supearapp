@@ -29,7 +29,7 @@ class AcercaDe extends StatelessWidget {
             CircleAvatar(
               radius: 50,
               backgroundImage: const AssetImage(
-                'assets/pictures/userphoto.jpg',
+                'assets/pictures/userphoto.png',
               ),
             ),
             SizedBox(height: 16),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
+//import 'cuestionario.json';
 
 class CuestionarioPage extends StatefulWidget {
   const CuestionarioPage({super.key});
@@ -24,7 +25,7 @@ class _CuestionarioPageState extends State<CuestionarioPage> {
 
   Future<void> _loadQuestionnaireData() async {
     try {
-      String jsonString = await rootBundle.loadString('assets/cuestionario.json');
+      String jsonString = await rootBundle.loadString('lib/entidades/cuestionario.json');
       Map<String, dynamic> data = jsonDecode(jsonString);
       setState(() {
         cuestionarioData = data;
@@ -119,11 +120,8 @@ class _CuestionarioPageState extends State<CuestionarioPage> {
 
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'tucorreo@ejemplo.com', // Reemplaza con tu correo
-      queryParameters: {
-        'subject': 'Resultados del cuestionario',
-        'body': body,
-      },
+      path: 'martiniverinirx@gmail.com', // Reemplaza con tu correo
+      queryParameters: {'subject': 'Resultados del cuestionario', 'body': body},
     );
 
     if (await canLaunchUrl(emailLaunchUri)) {
@@ -138,15 +136,11 @@ class _CuestionarioPageState extends State<CuestionarioPage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cuestionario de Satisfacción'),
-      ),
+      appBar: AppBar(title: const Text('Cuestionario de Satisfacción')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -165,8 +159,9 @@ class _CuestionarioPageState extends State<CuestionarioPage> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingresa tu correo';
                   }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                      .hasMatch(value)) {
+                  if (!RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  ).hasMatch(value)) {
                     return 'Correo no válido';
                   }
                   return null;
@@ -174,21 +169,33 @@ class _CuestionarioPageState extends State<CuestionarioPage> {
                 onChanged: (value) => email = value,
               ),
               const SizedBox(height: 30),
-              
+
               if (cuestionarioData['usabilidad'] != null)
-                _buildQuestionSection('Usabilidad', cuestionarioData['usabilidad']),
-              
+                _buildQuestionSection(
+                  'Usabilidad',
+                  cuestionarioData['usabilidad'],
+                ),
+
               if (cuestionarioData['contenido'] != null)
-                _buildQuestionSection('Contenido', cuestionarioData['contenido']),
-              
+                _buildQuestionSection(
+                  'Contenido',
+                  cuestionarioData['contenido'],
+                ),
+
               if (cuestionarioData['compartir'] != null)
-                _buildQuestionSection('Compartir', cuestionarioData['compartir']),
-              
+                _buildQuestionSection(
+                  'Compartir',
+                  cuestionarioData['compartir'],
+                ),
+
               const SizedBox(height: 30),
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 15,
+                    ),
                     textStyle: const TextStyle(fontSize: 18),
                   ),
                   onPressed: _sendEmail,
